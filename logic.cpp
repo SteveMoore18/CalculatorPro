@@ -6,6 +6,7 @@ Logic::Logic(QObject *parent) : QObject(parent)
 {
     displayEdit = nullptr;
     lbResult = nullptr;
+    historyList = nullptr;
 
     calculation = new Calculation(this);
 }
@@ -22,21 +23,6 @@ void Logic::setLbResult(QLabel *value)
 
 void Logic::startOfInput(const QString &textButton)
 {
-    // If entered an math operator then we stop input new
-    // operators
-    if (textButton == "+" || textButton == "-" ||
-            textButton == "*" || textButton == "/" || textButton == ".")
-    {
-        if (!operatorEntered)
-            displayEdit->insert(textButton);
-
-        operatorEntered = true;
-    }
-    else
-    {
-        operatorEntered = false;
-    }
-
 
     // Crear all display edit
     if (textButton == "Clear"){
@@ -55,17 +41,32 @@ void Logic::startOfInput(const QString &textButton)
         QString text = displayEdit->text();
         if (!text.isEmpty())
         {
-            double result = calculation->solveExpression(text);
-            lbResult->setText(QString::number(result));
+            
+            QString result = calculation->solveExpression(text);
+            lbResult->setText(result);
+            
+            QString strHistory = QString("%1 = %2").arg(text).arg(result);
+            historyList->addItem(strHistory);
+            
+            int itemCount = historyList->count() - 1;
+            historyList->item(itemCount)->setSizeHint(listItemSize);
+            
         }
         
     }
     // Other just add new symbol to displat edit
     else
     {
-        if (!operatorEntered)
-            displayEdit->insert(textButton);
-
+        
+        displayEdit->insert(textButton);
+        
     }
 
 }
+
+void Logic::setHistoryList(QListWidget *historyList)
+{
+    this->historyList = historyList;
+}
+
+

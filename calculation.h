@@ -11,7 +11,7 @@ class Calculation : public QObject
 public:
     explicit Calculation(QObject *parent = nullptr);
 
-    double solveExpression(const QString &expression);
+    QString solveExpression(const QString &expression);
 
 
 private:
@@ -21,9 +21,23 @@ private:
     QStack<double> *numberStack;
     QStack<QString> *operatorStack;
 
+    // This function shares numbers and operators to vector
+    // for further distribution for stack.
     void fillVectorNumbersAndOperators();
+    
+    // Here makes a calculation.
     void stackDistribution();
+    
+    // This function make result from stacks.
     void makeResult();
+    
+    
+    QString errorMessage;
+    bool checkBrackets();
+    
+    int numbers = 0;
+    int operators = 0;
+    bool checkNumbersAndOperators();
 
 };
 

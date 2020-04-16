@@ -43,6 +43,8 @@ private slots:
     
 private:
     QGridLayout *mainLayout;
+    bool operatorEntered;
+    bool dotEntered;
 
 
     QPushButton *btn0;
