@@ -70,6 +70,9 @@ void Calculation::stackDistribution()
         if (isNumber)
         {
             numberStack->push(sym.toDouble());
+        }else if (sym == "(")
+        {
+            operatorStack->push(sym);
         }
         else
         {
@@ -83,10 +86,10 @@ void Calculation::stackDistribution()
                 {
                     makeResult();
                 }
-                else if (operatorStack->top() == "-" && numberStack->size() > 1)
-                {
-                    makeResult();
-                }
+//                else if (operatorStack->top() == "-" && numberStack->size() > 1)
+//                {
+//                    makeResult();
+//                }
 
                 if (sym == ")")
                 {
@@ -98,6 +101,21 @@ void Calculation::stackDistribution()
                         makeResult();
                     }
                     operatorStack->pop();
+
+                    if (operatorStack->top() == "*" && numberStack->size() > 1)
+                    {
+                        makeResult();
+                    }
+                    else if (operatorStack->top() == "/" && numberStack->size() > 1)
+                    {
+                        makeResult();
+                    }
+
+                    if (operatorStack->top() == "-" && numberStack->size() > 1)
+                    {
+                        makeResult();
+                    }
+
                 }
             }
             if (sym != ")")

@@ -8,6 +8,7 @@
 #include <QListWidget>
 #include <QComboBox>
 #include <QLabel>
+#include <QTabWidget>
 
 #include "CalculaterMode/normalmode.h"
 #include "logic.h"
@@ -26,7 +27,7 @@ private:
     NormalMode *normalMode;
     QLineEdit *displayEdit;
     QListWidget *historyList;
-    QComboBox *cbMode;
+    QTabWidget *tabMode;
     QLabel *lbResult;
 
     QScreen *screen;
