@@ -96,6 +96,16 @@ NormalMode::NormalMode(QWidget *parent) : QWidget(parent)
     setLayout(mainLayout);
 }
 
+void NormalMode::blockOperators(const bool status)
+{
+    btnPlus->setEnabled(status);
+    btnMinus->setEnabled(status);
+    btnMultiply->setEnabled(status);
+    btnDivision->setEnabled(status);
+    btnDot->setEnabled(status);
+
+}
+
 void NormalMode::on_btn0_clicked()
 {
     emit buttonClicked("0");

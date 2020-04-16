@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QComboBox>
 #include <QLineEdit>
+#include <QLabel>
 
 
 #include "calculation.h"
@@ -16,10 +17,15 @@ public:
 
     void setDisplayEdit(QLineEdit *value);
 
+    void setLbResult(QLabel *value);
+
 private:
     QLineEdit *displayEdit;
+    QLabel *lbResult;
 
     Calculation *calculation;
+
+    bool operatorEntered = false;;
 
 public slots:
     void startOfInput(const QString &textButton);

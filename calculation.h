@@ -11,18 +11,19 @@ class Calculation : public QObject
 public:
     explicit Calculation(QObject *parent = nullptr);
 
-    int solveExpression(const QString &expression);
+    double solveExpression(const QString &expression);
+
 
 private:
     QString expression;
 
     QVector<QString> *numbersAndOperators;
-    QStack<int> *numberStack;
+    QStack<double> *numberStack;
     QStack<QString> *operatorStack;
 
     void fillVectorNumbersAndOperators();
     void stackDistribution();
-    int makeResult();
+    void makeResult();
 
 };
 

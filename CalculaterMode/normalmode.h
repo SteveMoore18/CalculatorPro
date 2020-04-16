@@ -12,6 +12,8 @@ class NormalMode : public QWidget
 public:
     explicit NormalMode(QWidget *parent = nullptr);
 
+    void blockOperators(const bool status);
+
 signals:
     void buttonClicked(const QString &textButton);
     

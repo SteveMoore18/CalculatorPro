@@ -5,20 +5,23 @@
 Calculation::Calculation(QObject *parent) : QObject(parent)
 {
     numbersAndOperators = new QVector<QString>();
-    numberStack = new QStack<int>();
+    numberStack = new QStack<double>();
     operatorStack = new QStack<QString>();
+
 }
 
-int Calculation::solveExpression(const QString &expression)
+double Calculation::solveExpression(const QString &expression)
 {
     this->expression = expression;
+
     numbersAndOperators->clear();
     operatorStack->clear();
     numberStack->clear();
+
     fillVectorNumbersAndOperators();
     stackDistribution();
 
-    return 0;
+    return numberStack->top();
 }
 
 void Calculation::fillVectorNumbersAndOperators()
@@ -28,12 +31,18 @@ void Calculation::fillVectorNumbersAndOperators()
     for (int i = 0; i < expression.size(); i++)
     {
         QString t = expression.at(i);
+        if (t == ".")
+        {
+            symbol += ".";
+            continue;
+        }
 
-        t.toInt(&isNumber);
+        t.toDouble(&isNumber);
         if (isNumber){
             symbol += t;
-            if (i + 1 == expression.size())
+            if (i + 1 == expression.size()){
                 numbersAndOperators->push_back(symbol);
+            }
         }
         else{
             numbersAndOperators->push_back(symbol);
@@ -56,22 +65,29 @@ void Calculation::stackDistribution()
         isNumber = false;
         QString sym = numbersAndOperators->at(i);
 
-        sym.toInt(&isNumber);
+        sym.toDouble(&isNumber);
 
         if (isNumber)
-            numberStack->push(sym.toInt());
+        {
+            numberStack->push(sym.toDouble());
+        }
         else
         {
             if (operatorStack->size() != 0)
             {
-                if (operatorStack->top() == "*")
+                if (operatorStack->top() == "*" && numberStack->size() > 1)
                 {
                     makeResult();
                 }
-                else if (operatorStack->top() == "/")
+                else if (operatorStack->top() == "/" && numberStack->size() > 1)
                 {
                     makeResult();
                 }
+                else if (operatorStack->top() == "-" && numberStack->size() > 1)
+                {
+                    makeResult();
+                }
+
                 if (sym == ")")
                 {
                     while (operatorStack->top() != "(")
@@ -99,18 +115,16 @@ void Calculation::stackDistribution()
         makeResult();
     }
 
-    qDebug() << numberStack->top();
-
 }
 
-int Calculation::makeResult()
+void Calculation::makeResult()
 {
-    int result = 0;
+    double result = 0;
 
-    int a = numberStack->top();
+    double a = numberStack->top();
     numberStack->pop();
 
-    int b = numberStack->top();
+    double b = numberStack->top();
     numberStack->pop();
 
     QString oper = operatorStack->top();

@@ -21,7 +21,7 @@ public:
     ~MainWindow();
 
 private:
-    QVBoxLayout *mainLayout;
+    QVBoxLayout *mainVLayout;
 
     NormalMode *normalMode;
     QLineEdit *displayEdit;
@@ -29,7 +29,11 @@ private:
     QComboBox *cbMode;
     QLabel *lbResult;
 
+    QScreen *screen;
+    QWidget *centralWidget;
+
     Logic *logic;
+
 
 private slots:
 
