@@ -221,6 +221,7 @@ void NormalMode::on_btnDivision_clicked()
 void NormalMode::on_btnRemoveOneSym_clicked()
 {
     emit buttonClicked("rmOneSym");
+    operatorEntered = false;
 }
 
 void NormalMode::on_btnDot_clicked()

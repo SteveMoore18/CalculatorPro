@@ -7,6 +7,14 @@ Calculation::Calculation(QObject *parent) : QObject(parent)
     numbersAndOperators = new QVector<QString>();
     numberStack = new QStack<double>();
     operatorStack = new QStack<QString>();
+    postfixVector = new QVector<QString>();
+    precedence = new QMap<QString, int>();
+    
+    precedence->insert("*", 3);
+    precedence->insert("/", 3);
+    precedence->insert("+", 2);
+    precedence->insert("-", 2);
+    precedence->insert("(", 1);
 
 }
 
@@ -17,6 +25,7 @@ QString Calculation::solveExpression(const QString &expression)
     numbersAndOperators->clear();
     operatorStack->clear();
     numberStack->clear();
+    postfixVector->clear();
     
     if (!checkBrackets())
         return errorMessage;
@@ -26,7 +35,9 @@ QString Calculation::solveExpression(const QString &expression)
     if (!checkNumbersAndOperators())
         return errorMessage;
     
-    stackDistribution();
+    transformToPostfix();
+    calculatePostfix();
+    
 
     if (!numberStack->isEmpty())
         return QString::number(numberStack->top());
@@ -72,119 +83,97 @@ void Calculation::fillVectorNumbersAndOperators()
         }
     }
 
-    for (int i = 0; i < numbersAndOperators->size(); i++)
+    for (int i = 0; i < numbersAndOperators->size(); i++){
         if (numbersAndOperators->at(i) == "")
             numbersAndOperators->remove(i);
+    }
     
-
+  
+    
 }
 
-void Calculation::stackDistribution()
+void Calculation::transformToPostfix()
 {
+    QString currentSymbol = "";
     bool isNumber = false;
-    QString currentSymbol;
     for (int i = 0; i < numbersAndOperators->size(); i++)
     {
-        isNumber = false;
         currentSymbol = numbersAndOperators->at(i);
-
         currentSymbol.toDouble(&isNumber);
-
+        
         if (isNumber)
-        {
-            numberStack->push(currentSymbol.toDouble());
-        }
+            postfixVector->push_back(currentSymbol);
         else if (currentSymbol == "(")
+            operatorStack->push_back(currentSymbol);
+        else if (currentSymbol == ")")
         {
-            operatorStack->push(currentSymbol);
+            while (operatorStack->top() != "(")
+            {
+                postfixVector->push_back(operatorStack->top());
+                operatorStack->pop();
+            }
+            operatorStack->pop();
         }
         else
         {
-            if (operatorStack->size() != 0)
+            while (!operatorStack->isEmpty()
+                   and precedence->value(operatorStack->top()) >= precedence->value(currentSymbol))
             {
-                if (numberStack->size() > 1)
-                {
-
-
-                    if (operatorStack->top() == "*" ||
-                        operatorStack->top() == "/")
-                    {
-                        makeResult();
-                    }
-
-
-                }
-
-                if (currentSymbol == ")")
-                {
-                    // Make calculations to close bracket
-                    while (operatorStack->top() != "(")
-                    {
-                        if (numberStack->size() == 1)
-                            break;
-
-                        makeResult();
-                    }
-                    operatorStack->pop();
-
-                    if (numberStack->size() > 1)
-                    {
-                        if (operatorStack->top() == "*" ||
-                            operatorStack->top() == "/")
-                        {
-                            makeResult();
-                        }
-                    }
-                }
+                postfixVector->push_back(operatorStack->top());
+                operatorStack->pop();
             }
-            
-            if (currentSymbol != ")")
-                operatorStack->push(currentSymbol);
+            operatorStack->push(currentSymbol);
         }
-
-
     }
-
-    // Make calculations
-    while (!numberStack->isEmpty())
-    {
-        if (numberStack->size() == 1)
-            break;
-
-        makeResult();
-    }
-
-}
-
-void Calculation::makeResult()
-{
-    /* Taking 2 number and 1 operator from stack
-     and makes operation.
-     */
     
-    double result = 0;
+    while (!operatorStack->isEmpty())
+    {
+        postfixVector->push_back(operatorStack->top());
+        operatorStack->pop();
+    }
 
-    double a = numberStack->top();
-    numberStack->pop();
-
-    double b = numberStack->top();
-    numberStack->pop();
-
-    QString oper = operatorStack->top();
-    operatorStack->pop();
-
-
-    if (oper == "+")
-        result = a + b;
-    else if (oper == "-")
-        result = b - a;
-    else if (oper == "*")
-        result = a * b;
-    else if (oper == "/")
-        result = b / a;
-
-    numberStack->push(result);
 }
+
+void Calculation::calculatePostfix()
+{
+    QString currentSymbol = "";
+    bool isNumber = false;
+    
+    for (int i = 0; i < postfixVector->size(); i++)
+    {
+        currentSymbol = postfixVector->at(i);
+        
+        currentSymbol.toDouble(&isNumber);
+        
+        if (isNumber)
+            numberStack->push(currentSymbol.toDouble());
+        else
+        {
+                double a = numberStack->top();
+                numberStack->pop();
+                
+                double b = numberStack->top();
+                numberStack->pop();
+                
+                double result = 0;
+                if (currentSymbol == "+")
+                    result = a + b;
+                else if (currentSymbol == "-")
+                    result = b - a;
+                else if (currentSymbol == "*")
+                    result = a * b;
+                else if (currentSymbol == "/")
+                    result = b / a;
+                
+                numberStack->push(result);
+            
+            
+            
+        }
+    }
+    
+}
+
 
 bool Calculation::checkBrackets()
 {

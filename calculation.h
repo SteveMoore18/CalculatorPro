@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QVector>
 #include <QStack>
+#include <QMap>
 
 class Calculation : public QObject
 {
@@ -16,20 +17,21 @@ public:
 
 private:
     QString expression;
+    QMap<QString, int> *precedence;
 
     QVector<QString> *numbersAndOperators;
-    QStack<double> *numberStack;
-    QStack<QString> *operatorStack;
 
     // This function shares numbers and operators to vector
     // for further distribution for stack.
     void fillVectorNumbersAndOperators();
     
-    // Here makes a calculation.
-    void stackDistribution();
+    // Here makes a transform
+    QStack<double> *numberStack;
+    QStack<QString> *operatorStack;
+    QVector<QString> *postfixVector;
+    void transformToPostfix();
     
-    // This function make result from stacks.
-    void makeResult();
+    void calculatePostfix();
     
     
     QString errorMessage;

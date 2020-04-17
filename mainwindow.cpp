@@ -18,7 +18,9 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     normalMode = new NormalMode(this);
-    displayEdit = new QLineEdit(this);
+    mathMode = new MathMode(this);
+    
+    displayEdit = new QPlainTextEdit(this);
     historyList = new QListWidget(this);
     //cbMode = new QComboBox(this);
     tabMode = new QTabWidget(this);
@@ -27,7 +29,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     int w = screen->geometry().width() - 18;
 
-    displayEdit->setText("2+2*(3+3-(8+4))");
+    //displayEdit->setText("2+(2*(4-2))");
     displayEdit->setReadOnly(true);
 
     displayEdit->setMinimumSize(w, 60);
@@ -51,16 +53,16 @@ MainWindow::MainWindow(QWidget *parent)
     mainVLayout->addWidget(displayEdit, 1, Qt::AlignHCenter);
     
     tabMode->addTab(normalMode, "Basic");
+    tabMode->addTab(mathMode, "Math");
     
     mainVLayout->addWidget(tabMode);
-
 
     logic->setDisplayEdit(displayEdit);
     logic->setLbResult(lbResult);
     logic->setHistoryList(historyList);
 
-    connect(normalMode, SIGNAL(buttonClicked(QString)),  logic, SLOT(startOfInput(QString)));
-
+    connect(normalMode, SIGNAL(buttonClicked(QString)),  logic, SLOT(startInputBasic(QString)));
+    connect(mathMode, SIGNAL(buttonClicked(QString)), logic, SLOT(startInputMath(QString)));
 
     centralWidget->setLayout(mainVLayout);
     setCentralWidget(centralWidget);

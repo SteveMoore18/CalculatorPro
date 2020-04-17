@@ -6,6 +6,7 @@
 #include <QLineEdit>
 #include <QLabel>
 #include <QListWidget>
+#include <QPlainTextEdit>
 
 #include "calculation.h"
 
@@ -18,14 +19,16 @@ private:
 public:
     explicit Logic(QObject *parent = nullptr);
 
-    void setDisplayEdit(QLineEdit *value);
+    void setDisplayEdit(QPlainTextEdit *value);
 
     void setLbResult(QLabel *value);
     
     void setHistoryList(QListWidget *historyList);
 
 private:
-    QLineEdit *displayEdit;
+    QPlainTextEdit *displayEdit;
+    QTextCursor cursor;
+    
     QLabel *lbResult;
     QListWidget *historyList;
 
@@ -34,9 +37,12 @@ private:
     bool operatorEntered = false;
     bool dotEntered = false;
     
+    void startingInput(const QString &textButton);
 
 public slots:
-    void startOfInput(const QString &textButton);
+    void startInputBasic(const QString &textButton);
+    
+    void startInputMath(const QString &textButton);
 
 };
 

@@ -11,7 +11,7 @@ Logic::Logic(QObject *parent) : QObject(parent)
     calculation = new Calculation(this);
 }
 
-void Logic::setDisplayEdit(QLineEdit *value)
+void Logic::setDisplayEdit(QPlainTextEdit *value)
 {
     displayEdit = value;
 }
@@ -21,9 +21,24 @@ void Logic::setLbResult(QLabel *value)
     lbResult = value;
 }
 
-void Logic::startOfInput(const QString &textButton)
+void Logic::startInputBasic(const QString &textButton)
 {
+    startingInput(textButton);
+}
 
+void Logic::startInputMath(const QString &textButton)
+{
+    startingInput(textButton);
+}
+
+void Logic::setHistoryList(QListWidget *historyList)
+{
+    this->historyList = historyList;
+}
+
+
+void Logic::startingInput(const QString &textButton)
+{
     // Crear all display edit
     if (textButton == "Clear"){
         displayEdit->clear();
@@ -33,12 +48,14 @@ void Logic::startOfInput(const QString &textButton)
     // Remove one symbol
     else if (textButton == "rmOneSym")
     {
-        displayEdit->backspace();
+        //displayEdit->bac
     }
     // Make calculations
     else if (textButton == "=")
     {
-        QString text = displayEdit->text();
+        
+        
+        QString text = displayEdit->toPlainText();
         if (!text.isEmpty())
         {
             
@@ -57,16 +74,9 @@ void Logic::startOfInput(const QString &textButton)
     // Other just add new symbol to displat edit
     else
     {
+        cursor = displayEdit->textCursor();
+        cursor.insertHtml(textButton);
         
-        displayEdit->insert(textButton);
         
     }
-
 }
-
-void Logic::setHistoryList(QListWidget *historyList)
-{
-    this->historyList = historyList;
-}
-
-

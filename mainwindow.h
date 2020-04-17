@@ -12,6 +12,7 @@
 
 #include "CalculaterMode/normalmode.h"
 #include "logic.h"
+#include "CalculaterMode/MathMode.hpp"
 
 class MainWindow : public QMainWindow
 {
@@ -25,7 +26,9 @@ private:
     QVBoxLayout *mainVLayout;
 
     NormalMode *normalMode;
-    QLineEdit *displayEdit;
+    MathMode *mathMode;
+    
+    QPlainTextEdit *displayEdit;
     QListWidget *historyList;
     QTabWidget *tabMode;
     QLabel *lbResult;
