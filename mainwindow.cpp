@@ -30,7 +30,7 @@ MainWindow::MainWindow(QWidget *parent)
     int w = screen->geometry().width() - 18;
 
     //displayEdit->setText("2+(2*(4-2))");
-    displayEdit->setReadOnly(true);
+    //displayEdit->setReadOnly(true);
 
     displayEdit->setMinimumSize(w, 60);
     displayEdit->setMaximumSize(w, 90);

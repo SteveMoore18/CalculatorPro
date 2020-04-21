@@ -10,6 +10,7 @@ Calculation::Calculation(QObject *parent) : QObject(parent)
     postfixVector = new QVector<QString>();
     precedence = new QMap<QString, int>();
     
+    precedence->insert("^", 4);
     precedence->insert("*", 3);
     precedence->insert("/", 3);
     precedence->insert("+", 2);
@@ -74,7 +75,7 @@ void Calculation::fillVectorNumbersAndOperators()
             numbers++;
         }
         else{
-            if (currentSymbol != "(" && currentSymbol != ")")
+            if (currentSymbol != "(" && currentSymbol != ")" && currentSymbol != "^")
                 operators++;
             
             numbersAndOperators->push_back(symbol);
@@ -84,7 +85,7 @@ void Calculation::fillVectorNumbersAndOperators()
     }
 
     for (int i = 0; i < numbersAndOperators->size(); i++){
-        if (numbersAndOperators->at(i) == "")
+        if (numbersAndOperators->at(i) == "" or numbersAndOperators->at(i) == " ")
             numbersAndOperators->remove(i);
     }
     
@@ -105,6 +106,7 @@ void Calculation::transformToPostfix()
             postfixVector->push_back(currentSymbol);
         else if (currentSymbol == "(")
             operatorStack->push_back(currentSymbol);
+
         else if (currentSymbol == ")")
         {
             while (operatorStack->top() != "(")
@@ -131,6 +133,25 @@ void Calculation::transformToPostfix()
         postfixVector->push_back(operatorStack->top());
         operatorStack->pop();
     }
+    
+    
+    QString s = "";
+    int size = postfixVector->size();
+    for (int i = 0; i < size; i++)
+    {
+        if (postfixVector->at(i) == "^" && postfixVector->at(i - 1) == "-")
+        {
+            postfixVector->insert(i - 3, "1");
+            postfixVector->insert(i + 2, "/");
+            postfixVector->remove(i);
+        }
+    }
+
+//    for (int i = 0; i < postfixVector->size(); i++)
+//    {
+//        s += postfixVector->at(i);
+//    }
+//    qDebug() << s;
 
 }
 
@@ -164,6 +185,9 @@ void Calculation::calculatePostfix()
                     result = a * b;
                 else if (currentSymbol == "/")
                     result = b / a;
+                else if (currentSymbol == "^"){
+                    result = pow(b, a);
+                }
                 
                 numberStack->push(result);
             

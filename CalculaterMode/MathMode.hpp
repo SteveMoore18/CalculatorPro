@@ -30,12 +30,27 @@ private:
     NormalMode *normalMode;
     
     QPushButton *btnPow2;
+    QPushButton *btnSqrt;
+    QPushButton *btnSin;
+    QPushButton *btnCos;
+    QPushButton *btnTan;
+    QPushButton *btnCtg;
+//    QPushButton *btnTan;
+//    QPushButton *btnCtg;
+    
+    
     
     QHBoxLayout *mainLayout;
     QGridLayout *mathLayout;
     
+    bool btnPowClicked = false;
+    
 private slots:
     void on_btnPow2_clicked();
+    
+    void on_btnSqrt_clicked();
+    
+    void on_normalMode_clicked(const QString &textButton);
     
 };
 

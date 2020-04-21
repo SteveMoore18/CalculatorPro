@@ -15,7 +15,7 @@ public:
     void blockOperators(const bool status);
 
 signals:
-    void buttonClicked(const QString &textButton);
+    void buttonClicked(const QString &txButton);
     
 private slots:
     void on_btn0_clicked();

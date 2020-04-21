@@ -29,6 +29,10 @@ private:
     QPlainTextEdit *displayEdit;
     QTextCursor cursor;
     
+    bool powEntered = false;
+    bool minusEntered = false;
+    QString infixExpression = "";
+    
     QLabel *lbResult;
     QListWidget *historyList;
 
@@ -38,6 +42,8 @@ private:
     bool dotEntered = false;
     
     void startingInput(const QString &textButton);
+    
+    bool isOperator(const QString &str);
 
 public slots:
     void startInputBasic(const QString &textButton);

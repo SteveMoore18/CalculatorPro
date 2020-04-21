@@ -23,11 +23,35 @@ void Logic::setLbResult(QLabel *value)
 
 void Logic::startInputBasic(const QString &textButton)
 {
+    
     startingInput(textButton);
 }
 
 void Logic::startInputMath(const QString &textButton)
 {
+    if (textButton == "^" && powEntered)
+    {
+        return;
+    }
+    else if (textButton == "-" && minusEntered)
+    {
+        return;
+    }
+    if (textButton == "^" && !powEntered)
+    {
+        powEntered = true;
+    }
+    else if (isOperator(textButton) && textButton != "-")
+    {
+        powEntered = false;
+    }
+    else if (textButton == "-" && !minusEntered)
+    {
+        minusEntered = true;
+    }
+    
+    
+    
     startingInput(textButton);
 }
 
@@ -44,20 +68,57 @@ void Logic::startingInput(const QString &textButton)
         displayEdit->clear();
         lbResult->clear();
         operatorEntered = false;
+        powEntered = false;
+        infixExpression = "";
     }
     // Remove one symbol
     else if (textButton == "rmOneSym")
     {
-        //displayEdit->bac
+        cursor.deletePreviousChar();
+        
+        //infixExpression.remove(infixExpression.size() - 1, 1);
+        if (infixExpression.size() != 0)
+        {
+            
+        }
+        
     }
     // Make calculations
     else if (textButton == "=")
     {
-        
-        
-        QString text = displayEdit->toPlainText();
+        QString text = infixExpression;
         if (!text.isEmpty())
         {
+            // Get how pow operations in expression
+            int powCount = text.count("^");
+            
+            // Adding brackets
+            for (int j = 0; j < powCount; j++)
+            {
+                
+                int pos = text.indexOf("^");
+                if (pos != -1)
+                {
+                    // Add after ^ operation
+                    text.insert(pos + 1, "(");
+                    
+                    // Finding end of number pow
+                    for (int i = pos + 2; i <= text.size(); i++)
+                    {
+                        if (i == text.size())
+                        {
+                            text += ")";
+                            break;
+                        }
+                        else if (isOperator(text.at(i)))
+                        {
+                            text.insert(i, ")");
+                            break;
+                        }
+                    }
+                }
+                
+            }
             
             QString result = calculation->solveExpression(text);
             lbResult->setText(result);
@@ -75,8 +136,40 @@ void Logic::startingInput(const QString &textButton)
     else
     {
         cursor = displayEdit->textCursor();
-        cursor.insertHtml(textButton);
         
+        infixExpression += textButton;
+        if (powEntered)
+        {
+            
+            if (textButton != "^")
+            {
+                cursor.insertHtml("<sup>" + textButton + "</sup>");
+            }
+//            else if (textButton == "^")
+//                infixExpression += "(";
+        }
+        else
+        {
+            cursor.insertHtml(textButton);
+        }
+
         
     }
+}
+
+bool Logic::isOperator(const QString &str)
+{
+    QVector<QString> operators;
+    operators.push_back("+");
+    operators.push_back("*");
+    operators.push_back("-");
+    operators.push_back("/");
+    operators.push_back("(");
+    operators.push_back(")");
+    
+    for (int i = 0; i < operators.size(); i++)
+        if (str == operators.at(i))
+            return true;
+
+    return false;
 }
