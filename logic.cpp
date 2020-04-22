@@ -33,23 +33,22 @@ void Logic::startInputMath(const QString &textButton)
     {
         return;
     }
-    else if (textButton == "-" && minusEntered)
-    {
-        return;
-    }
     if (textButton == "^" && !powEntered)
     {
+        cursor.insertHtml("<sup>(</sup>");
         powEntered = true;
     }
-    else if (isOperator(textButton) && textButton != "-")
+    else if (textButton == ")" && powEntered)
     {
         powEntered = false;
     }
-    else if (textButton == "-" && !minusEntered)
-    {
-        minusEntered = true;
-    }
     
+    if (textButton == "√")
+    {
+        QString t = textButton + "(";
+        startingInput(t);
+        return;
+    }
     
     
     startingInput(textButton);
@@ -90,35 +89,35 @@ void Logic::startingInput(const QString &textButton)
         if (!text.isEmpty())
         {
             // Get how pow operations in expression
-            int powCount = text.count("^");
+            //int powCount = text.count("^");
             
             // Adding brackets
-            for (int j = 0; j < powCount; j++)
-            {
-                
-                int pos = text.indexOf("^");
-                if (pos != -1)
-                {
-                    // Add after ^ operation
-                    text.insert(pos + 1, "(");
-                    
-                    // Finding end of number pow
-                    for (int i = pos + 2; i <= text.size(); i++)
-                    {
-                        if (i == text.size())
-                        {
-                            text += ")";
-                            break;
-                        }
-                        else if (isOperator(text.at(i)))
-                        {
-                            text.insert(i, ")");
-                            break;
-                        }
-                    }
-                }
-                
-            }
+//            for (int j = 0; j < powCount; j++)
+//            {
+//
+//                int pos = text.indexOf("^");
+//                if (pos != -1)
+//                {
+//                    // Add after ^ operation
+//                    text.insert(pos + 1, "(");
+//
+//                    // Finding end of number pow
+//                    for (int i = pos + 2; i <= text.size(); i++)
+//                    {
+//                        if (i == text.size())
+//                        {
+//                            text += ")";
+//                            break;
+//                        }
+//                        else if (isOperator(text.at(i)))
+//                        {
+//                            text.insert(i, ")");
+//                            break;
+//                        }
+//                    }
+//                }
+//
+//            }
             
             QString result = calculation->solveExpression(text);
             lbResult->setText(result);
@@ -140,13 +139,10 @@ void Logic::startingInput(const QString &textButton)
         infixExpression += textButton;
         if (powEntered)
         {
-            
             if (textButton != "^")
             {
                 cursor.insertHtml("<sup>" + textButton + "</sup>");
             }
-//            else if (textButton == "^")
-//                infixExpression += "(";
         }
         else
         {

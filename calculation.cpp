@@ -10,6 +10,7 @@ Calculation::Calculation(QObject *parent) : QObject(parent)
     postfixVector = new QVector<QString>();
     precedence = new QMap<QString, int>();
     
+    precedence->insert("√", 4);
     precedence->insert("^", 4);
     precedence->insert("*", 3);
     precedence->insert("/", 3);
@@ -33,8 +34,8 @@ QString Calculation::solveExpression(const QString &expression)
     
 
     fillVectorNumbersAndOperators();
-    if (!checkNumbersAndOperators())
-        return errorMessage;
+    //if (!checkNumbersAndOperators())
+    //    return errorMessage;
     
     transformToPostfix();
     calculatePostfix();
@@ -170,29 +171,42 @@ void Calculation::calculatePostfix()
             numberStack->push(currentSymbol.toDouble());
         else
         {
+            double result = 0;
+
+            if (currentSymbol == "√")
+            {
                 double a = numberStack->top();
                 numberStack->pop();
-                
-                double b = numberStack->top();
-                numberStack->pop();
-                
-                double result = 0;
-                if (currentSymbol == "+")
-                    result = a + b;
-                else if (currentSymbol == "-")
-                    result = b - a;
-                else if (currentSymbol == "*")
-                    result = a * b;
-                else if (currentSymbol == "/")
-                    result = b / a;
-                else if (currentSymbol == "^"){
-                    result = pow(b, a);
-                }
-                
+
+                result = sqrt(a);
                 numberStack->push(result);
+                continue;
+            }
+
+            double a = numberStack->top();
+            numberStack->pop();
+            
+            double b = 0;
+            if (!numberStack->isEmpty())
+            {
+                b = numberStack->top();
+                numberStack->pop();
+            }
             
             
+
+            if (currentSymbol == "+")
+                result = a + b;
+            else if (currentSymbol == "-")
+                result = b - a;
+            else if (currentSymbol == "*")
+                result = a * b;
+            else if (currentSymbol == "/")
+                result = b / a;
+            else if (currentSymbol == "^")
+                result = pow(b, a);
             
+            numberStack->push(result);
         }
     }
     
