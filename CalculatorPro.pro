@@ -18,6 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     CalculaterMode/MathMode.cpp \
     CalculaterMode/normalmode.cpp \
+    CalculaterMode/ProgrammerMode.cpp \
     calculation.cpp \
     logic.cpp \
     main.cpp \
@@ -26,6 +27,7 @@ SOURCES += \
 HEADERS += \
     CalculaterMode/MathMode.hpp \
     CalculaterMode/normalmode.h \
+    CalculaterMode/ProgrammerMode.h \
     calculation.h \
     logic.h \
     mainwindow.h

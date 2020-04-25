@@ -14,6 +14,8 @@ public:
 
     void blockOperators(const bool status);
 
+    QGridLayout *getMainLayout() const;
+
 signals:
     void buttonClicked(const QString &txButton);
     
@@ -45,7 +47,6 @@ private:
     QGridLayout *mainLayout;
     bool operatorEntered;
     bool dotEntered;
-
 
     QPushButton *btn0;
     QPushButton *btn1;

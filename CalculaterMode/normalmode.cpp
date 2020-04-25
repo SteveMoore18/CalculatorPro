@@ -50,9 +50,7 @@ NormalMode::NormalMode(QWidget *parent) : QWidget(parent)
     btnEqual->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
 
 
-
     mainLayout->addWidget(btnClear, 0, 0);
-    //mainLayout->addWidget(btnPlusMinus, 0, 1);
     mainLayout->addWidget(btnBracketOpen, 0, 1);
     mainLayout->addWidget(btnBracketClose, 0, 2);
     mainLayout->addWidget(btnDivision, 0, 3);
@@ -72,6 +70,8 @@ NormalMode::NormalMode(QWidget *parent) : QWidget(parent)
     mainLayout->addWidget(btnDot, 4, 1);
     mainLayout->addWidget(btnRemoveOneSym, 4, 2);
     mainLayout->addWidget(btnEqual, 4, 3);
+    
+    //mainLayout->setMargin(0);
 
     connect(btn0, SIGNAL(clicked()), this, SLOT(on_btn0_clicked()));
     connect(btn1, SIGNAL(clicked()), this, SLOT(on_btn1_clicked()));
@@ -93,7 +93,6 @@ NormalMode::NormalMode(QWidget *parent) : QWidget(parent)
     connect(btnRemoveOneSym, SIGNAL(clicked()), this, SLOT(on_btnRemoveOneSym_clicked()));
     connect(btnDot, SIGNAL(clicked()), this, SLOT(on_btnDot_clicked()));
     connect(btnEqual, SIGNAL(clicked()), this, SLOT(on_btnEqual_clicked()));
-
 
     setLayout(mainLayout);
 }
@@ -236,4 +235,9 @@ void NormalMode::on_btnDot_clicked()
 void NormalMode::on_btnEqual_clicked()
 {
     emit buttonClicked("=");
+}
+
+QGridLayout *NormalMode::getMainLayout() const
+{
+    return mainLayout;
 }

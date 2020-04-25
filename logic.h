@@ -9,6 +9,8 @@
 #include <QPlainTextEdit>
 
 #include "calculation.h"
+#include "MathMode.hpp"
+class MathMode;
 
 class Logic : public QObject
 {
@@ -24,10 +26,14 @@ public:
     void setLbResult(QLabel *value);
     
     void setHistoryList(QListWidget *historyList);
+    
+    void setMathMode(MathMode *mathMode);
 
 private:
     QPlainTextEdit *displayEdit;
     QTextCursor cursor;
+    
+    MathMode *mathMode;
     
     bool powEntered = false;
     bool minusEntered = false;

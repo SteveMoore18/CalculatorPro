@@ -23,6 +23,16 @@ class MathMode : public QWidget
 public:
     explicit MathMode(QWidget *parent = nullptr);
     
+    
+    
+    enum TrigMode
+    {
+        RADIAN,
+        DEGREE
+    };
+    
+    TrigMode getTrigMode() const;
+    
 signals:
     void buttonClicked(const QString &textButton);
     
@@ -35,10 +45,14 @@ private:
     QPushButton *btnCos;
     QPushButton *btnTan;
     QPushButton *btnCtg;
-//    QPushButton *btnTan;
-//    QPushButton *btnCtg;
+    QPushButton *btnTrigMode;
+    QPushButton *btnPi;
+    QPushButton *btnE;
+    QPushButton *btnLog10;
+    QPushButton *btnLog2;
+    QPushButton *btnLn;
     
-    
+    TrigMode trigMode;
     
     QHBoxLayout *mainLayout;
     QGridLayout *mathLayout;
@@ -50,7 +64,30 @@ private slots:
     
     void on_btnSqrt_clicked();
     
+    void on_btnSin_clicked();
+    
+    void on_btnCos_clicked();
+    
+    void on_btnTan_clicked();
+    
+    void on_btnCtg_clicked();
+    
+    void on_btnTrigMode_clicked();
+    
+    void on_btnPi_clicked();
+    
+    void on_btnE_clicked();
+    
+    void on_btnLog10_clicked();
+    
+    void on_btnLog2_clicked();
+    
+    void on_btnLn_clicked();
+    
     void on_normalMode_clicked(const QString &textButton);
+    
+    
+    
     
 };
 

@@ -5,6 +5,10 @@
 #include <QVector>
 #include <QStack>
 #include <QMap>
+#include <QtMath>
+
+#include "MathMode.hpp"
+class MathMode;
 
 class Calculation : public QObject
 {
@@ -14,10 +18,12 @@ public:
 
     QString solveExpression(const QString &expression);
 
+    void setMathMode(MathMode *mathMode);
 
 private:
     QString expression;
     QMap<QString, int> *precedence;
+    MathMode *mathMode;
 
     QVector<QString> *numbersAndOperators;
 
@@ -33,14 +39,23 @@ private:
     
     void calculatePostfix();
     
-    
     QString errorMessage;
     bool checkBrackets();
     
     int numbers = 0;
     int operators = 0;
     bool checkNumbersAndOperators();
-
+    
+    double solveTrigonometric(const QString &oper);
+    
+    QVector<QString> *trigOperators;
+    bool isTrigonometricFunc(const QString &oper);
+    
+    double solveLogarithm(const QString &oper);
+    
+    QVector<QString> *logarithmOperators;
+    bool isLogarithm(const QString &oper);
+    
 };
 
 #endif // CALCULATION_H

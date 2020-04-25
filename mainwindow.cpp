@@ -16,7 +16,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     screen = QGuiApplication::primaryScreen();
 
-
     normalMode = new NormalMode(this);
     mathMode = new MathMode(this);
     
@@ -38,11 +37,6 @@ MainWindow::MainWindow(QWidget *parent)
     historyList->setMinimumSize(w, 70);
     historyList->setMaximumSize(w, 200);
     
-//    for (int i = 0; i < 100; i++){
-//        historyList->addItem(QString::number(i));
-//        historyList->item(i)->setSizeHint(QSize(0, 50));
-//    }
-//    
     QScroller::grabGesture(historyList, QScroller::LeftMouseButtonGesture);
     historyList->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     
@@ -60,6 +54,7 @@ MainWindow::MainWindow(QWidget *parent)
     logic->setDisplayEdit(displayEdit);
     logic->setLbResult(lbResult);
     logic->setHistoryList(historyList);
+    logic->setMathMode(mathMode);
 
     connect(normalMode, SIGNAL(buttonClicked(QString)),  logic, SLOT(startInputBasic(QString)));
     connect(mathMode, SIGNAL(buttonClicked(QString)), logic, SLOT(startInputMath(QString)));
