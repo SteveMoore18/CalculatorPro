@@ -15,6 +15,8 @@ public:
     void blockOperators(const bool status);
 
     QGridLayout *getMainLayout() const;
+    
+    void removeDotButton();
 
 signals:
     void buttonClicked(const QString &txButton);
@@ -45,8 +47,6 @@ private slots:
     
 private:
     QGridLayout *mainLayout;
-    bool operatorEntered;
-    bool dotEntered;
 
     QPushButton *btn0;
     QPushButton *btn1;

@@ -9,10 +9,12 @@
 #include <QComboBox>
 #include <QLabel>
 #include <QTabWidget>
+#include <QScrollArea>
 
 #include "CalculaterMode/normalmode.h"
 #include "logic.h"
 #include "CalculaterMode/MathMode.hpp"
+#include "CalculaterMode/ProgrammerMode.hpp"
 
 class MainWindow : public QMainWindow
 {
@@ -22,11 +24,20 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    enum CalculatorMode
+    {
+        BASE,
+        MATH,
+        PROGRAMMER
+    };
+    
 private:
     QVBoxLayout *mainVLayout;
 
     NormalMode *normalMode;
     MathMode *mathMode;
+    ProgrammerMode *programmerMode;
+    ProgrammerMode::NumberSystem currentNumberSystem;
     
     QPlainTextEdit *displayEdit;
     QListWidget *historyList;
@@ -40,6 +51,7 @@ private:
 
 
 private slots:
+    void on_tabBar_clicked(int index);
 
 };
 #endif // MAINWINDOW_H

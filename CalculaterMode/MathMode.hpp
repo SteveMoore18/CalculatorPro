@@ -23,8 +23,6 @@ class MathMode : public QWidget
 public:
     explicit MathMode(QWidget *parent = nullptr);
     
-    
-    
     enum TrigMode
     {
         RADIAN,

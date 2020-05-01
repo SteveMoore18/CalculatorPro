@@ -3,8 +3,6 @@
 NormalMode::NormalMode(QWidget *parent) : QWidget(parent)
 {
     mainLayout = new QGridLayout;
-    operatorEntered = false;
-    dotEntered = false;
 
     btn0 = new QPushButton("0");
     btn1 = new QPushButton("1");
@@ -110,68 +108,56 @@ void NormalMode::blockOperators(const bool status)
 void NormalMode::on_btn0_clicked()
 {
     emit buttonClicked("0");
-    operatorEntered = false;
 }
 
 void NormalMode::on_btn1_clicked()
 {
     emit buttonClicked("1");
-    operatorEntered = false;
 }
 
 void NormalMode::on_btn2_clicked()
 {
     emit buttonClicked("2");
-    operatorEntered = false;
 }
 
 void NormalMode::on_btn3_clicked()
 {
     emit buttonClicked("3");
-    operatorEntered = false;
 }
 
 void NormalMode::on_btn4_clicked()
 {
     emit buttonClicked("4");
-    operatorEntered = false;
 }
 
 void NormalMode::on_btn5_clicked()
 {
     emit buttonClicked("5");
-    operatorEntered = false;
 }
 
 void NormalMode::on_btn6_clicked()
 {
     emit buttonClicked("6");
-    operatorEntered = false;
 }
 
 void NormalMode::on_btn7_clicked()
 {
    emit buttonClicked("7");
-   operatorEntered = false;
 }
 
 void NormalMode::on_btn8_clicked()
 {
     emit buttonClicked("8");
-    operatorEntered = false;
 }
 
 void NormalMode::on_btn9_clicked()
 {
     emit buttonClicked("9");
-    operatorEntered = false;
 }
 
 void NormalMode::on_btnClear_clicked()
 {
     emit buttonClicked("Clear");
-    operatorEntered = false;
-    dotEntered = false;
 }
 
 void NormalMode::on_btnBracketOpen_clicked()
@@ -186,50 +172,33 @@ void NormalMode::on_btnBracketClose_clicked()
 
 void NormalMode::on_btnPlus_clicked()
 {
-    if (!operatorEntered)
-        emit buttonClicked("+");
-    operatorEntered = true;
-    dotEntered = false;
+    emit buttonClicked("+");
 }
 
 void NormalMode::on_btnMinus_clicked()
 {
-    if (!operatorEntered)
-        emit buttonClicked("-");
-    operatorEntered = true;
-    dotEntered = false;
+    emit buttonClicked("-");
 }
 
 void NormalMode::on_btnMultiply_clicked()
 {
-    if (!operatorEntered)
-        emit buttonClicked("*");
-    operatorEntered = true;
-    dotEntered = false;
+    emit buttonClicked("*");
 }
 
 void NormalMode::on_btnDivision_clicked()
 {
-    if (!operatorEntered)
-        emit buttonClicked("/");
+    emit buttonClicked("/");
     
-    operatorEntered = true;
-    dotEntered = false;
 }
 
 void NormalMode::on_btnRemoveOneSym_clicked()
 {
     emit buttonClicked("rmOneSym");
-    operatorEntered = false;
 }
 
 void NormalMode::on_btnDot_clicked()
 {
-    if (!dotEntered)
-        emit buttonClicked(".");
-    
-    dotEntered = true;
-    operatorEntered = true;
+    emit buttonClicked(".");
 }
 
 void NormalMode::on_btnEqual_clicked()
@@ -240,4 +209,9 @@ void NormalMode::on_btnEqual_clicked()
 QGridLayout *NormalMode::getMainLayout() const
 {
     return mainLayout;
+}
+
+void NormalMode::removeDotButton()
+{
+    delete btnDot;
 }

@@ -31,6 +31,10 @@ Calculation::Calculation(QObject *parent) : QObject(parent)
     precedence->insert("√", 4);
     precedence->insert("^", 4);
     precedence->insert("*", 3);
+    precedence->insert("%", 3);
+    precedence->insert("∧", 3);
+    precedence->insert("∨", 3);
+    precedence->insert("⊕", 3);
     precedence->insert("/", 3);
     precedence->insert("+", 2);
     precedence->insert("-", 2);
@@ -51,22 +55,78 @@ QString Calculation::solveExpression(const QString &expression)
         return errorMessage;
     
 
-    fillVectorNumbersAndOperators();
-    //if (!checkNumbersAndOperators())
-    //    return errorMessage;
+    fillVectorNumbersAndOperators(*numbersAndOperators, expression);
     
-    transformToPostfix();
-    calculatePostfix();
+    try {
+        transformToPostfix();
+    } catch (QString error) {
+        errorMessage = error;
+        return errorMessage;
+    }
+    
+    
+    
+    try {
+        calculatePostfix();
+    } catch (QString error) {
+        errorMessage = error;
+        return errorMessage;
+    }
+    
     
 
     if (!numberStack->isEmpty())
-        return QString::number(numberStack->top());
+    {
+        QString s;
+        int numberSystem = 0;
+        if (programmerMode->getNumberSystem() == ProgrammerMode::NumberSystem::BIN)
+        {
+            numberSystem = 2;
+        }
+        else if (programmerMode->getNumberSystem() == ProgrammerMode::NumberSystem::OCT)
+        {
+            numberSystem = 8;
+        }
+        else if (programmerMode->getNumberSystem() == ProgrammerMode::NumberSystem::DEC)
+        {
+            numberSystem = 10;
+        }
+        else if (programmerMode->getNumberSystem() == ProgrammerMode::NumberSystem::HEX)
+        {
+            numberSystem = 16;
+        }
+        else
+        {
+            return QString::number(numberStack->top());
+        }
+        
+        int number = numberStack->top();
+        if (number < 0)
+        {
+            int positiveNumber = abs(number);
+            s.setNum((uint)positiveNumber, numberSystem);
+            s = s.toUpper();
+            s = "-" + s;
+        }
+        else
+        {
+            s.setNum((uint)number, numberSystem);
+            s = s.toUpper();
+        }
+        
+        
+        return s;
+        
+        //return QString::number(numberStack->top());
+    }
     else
+    {
         return "Error!";
+    }
     
 }
 
-void Calculation::fillVectorNumbersAndOperators()
+void Calculation::fillVectorNumbersAndOperators(QVector<QString> &vector, QString expr)
 {
     
     numbers = 0;
@@ -75,9 +135,9 @@ void Calculation::fillVectorNumbersAndOperators()
     QString symbol = "";
     QString currentSymbol = "";
     bool isNumber = false;
-    for (int i = 0; i < expression.size(); i++)
+    for (int i = 0; i < expr.size(); i++)
     {
-        currentSymbol = expression.at(i);
+        currentSymbol = expr.at(i);
         if (currentSymbol == ".")
         {
             symbol += ".";
@@ -87,62 +147,70 @@ void Calculation::fillVectorNumbersAndOperators()
         currentSymbol.toDouble(&isNumber);
         if (isNumber){
             symbol += currentSymbol;
-            if (i + 1 == expression.size()){
-                numbersAndOperators->push_back(symbol);
+            if (i + 1 == expr.size()){
+                vector.push_back(symbol);
             }
             
             numbers++;
         }
-        else if (currentSymbol == "l" && expression.at(i + 1) == "n")
+        else if (currentSymbol == "A" || currentSymbol == "B" || currentSymbol == "C" ||
+                 currentSymbol == "D" || currentSymbol == "E" || currentSymbol == "F")
+        {
+            symbol += currentSymbol;
+            if (i + 1 == expr.size()){
+                vector.push_back(symbol);
+            }
+        }
+        else if (currentSymbol == "l" && expr.at(i + 1) == "n")
         {
             currentSymbol += "n";
             i += 1;
-            numbersAndOperators->push_back(currentSymbol);
+            vector.push_back(currentSymbol);
         }
-        else if (currentSymbol == "l" && expression.at(i + 3) == "2")
+        else if (currentSymbol == "l" && expr.at(i + 3) == "2")
         {
             currentSymbol += "og2";
             i += 3;
-            numbersAndOperators->push_back(currentSymbol);
+            vector.push_back(currentSymbol);
         }
-        else if (currentSymbol == "l" && expression.at(i + 3) == "1")
+        else if (currentSymbol == "l" && expr.at(i + 3) == "1")
         {
             currentSymbol += "og10";
             i += 4;
-            numbersAndOperators->push_back(currentSymbol);
+            vector.push_back(currentSymbol);
         }
         else if (currentSymbol == "s")
         {
             currentSymbol += "in";
             i += 2;
-            numbersAndOperators->push_back(currentSymbol);
+            vector.push_back(currentSymbol);
         }
-        else if (currentSymbol == "c" && expression.at(i + 1) == "t")
+        else if (currentSymbol == "c" && expr.at(i + 1) == "t")
         {
             currentSymbol += "tg";
             i += 2;
-            numbersAndOperators->push_back(currentSymbol);
+            vector.push_back(currentSymbol);
         }
         else if (currentSymbol == "c")
         {
             currentSymbol += "os";
             i += 2;
-            numbersAndOperators->push_back(currentSymbol);
+            vector.push_back(currentSymbol);
         }
         else if (currentSymbol == "t")
         {
             currentSymbol += "an";
             i += 2;
-            numbersAndOperators->push_back(currentSymbol);
+            vector.push_back(currentSymbol);
         }
         else if (currentSymbol == "π")
         {
-            numbersAndOperators->push_back(QString::number(M_PI));
+            vector.push_back(QString::number(M_PI));
             continue;
         }
         else if (currentSymbol == "e")
         {
-            numbersAndOperators->push_back(QString::number(M_E));
+            vector.push_back(QString::number(M_E));
             continue;
         }
         else{
@@ -150,15 +218,48 @@ void Calculation::fillVectorNumbersAndOperators()
                 operators++;
             
             
-            numbersAndOperators->push_back(symbol);
-            numbersAndOperators->push_back(currentSymbol);
+            vector.push_back(symbol);
+            vector.push_back(currentSymbol);
             symbol = "";
         }
     }
 
-    for (int i = 0; i < numbersAndOperators->size(); i++){
-        if (numbersAndOperators->at(i) == "" or numbersAndOperators->at(i) == " ")
-            numbersAndOperators->remove(i);
+    for (int i = 0; i < vector.size(); i++){
+        if (vector.at(i) == "" or vector.at(i) == " ")
+            vector.remove(i);
+    }
+    
+    if (programmerMode->getNumberSystem() != ProgrammerMode::NumberSystem::NONE)
+    {
+    
+        bool s = false;
+        int nSystem = 0;
+        
+        if (programmerMode->getNumberSystem() == ProgrammerMode::NumberSystem::BIN)
+        {
+            nSystem = 2;
+        }
+        else if (programmerMode->getNumberSystem() == ProgrammerMode::NumberSystem::OCT)
+        {
+            nSystem = 8;
+        }
+        else if (programmerMode->getNumberSystem() == ProgrammerMode::NumberSystem::DEC)
+        {
+            nSystem = 10;
+        }
+        else if (programmerMode->getNumberSystem() == ProgrammerMode::NumberSystem::HEX)
+        {
+            nSystem = 16;
+        }
+    
+    
+        for (int i = 0; i < vector.size(); i++){
+            int number = vector.at(i).toUInt(&s, nSystem);
+            if (s)
+            {
+                vector.replace(i, QString::number(number));
+            }
+        }
     }
     
 //    for (int i = 0; i < numbersAndOperators->size(); i++){
@@ -212,6 +313,8 @@ void Calculation::transformToPostfix()
     int size = postfixVector->size();
     for (int i = 0; i < size; i++)
     {
+        if (postfixVector->at(i) == "^" and i == 0)
+            throw QString("Error.");
         if (postfixVector->at(i) == "^" && postfixVector->at(i - 1) == "-")
         {
             postfixVector->insert(i - 3, "1");
@@ -233,6 +336,8 @@ void Calculation::calculatePostfix()
     QString currentSymbol = "";
     bool isNumber = false;
     
+    
+    
     for (int i = 0; i < postfixVector->size(); i++)
     {
         currentSymbol = postfixVector->at(i);
@@ -243,6 +348,9 @@ void Calculation::calculatePostfix()
             numberStack->push(currentSymbol.toDouble());
         else
         {
+            if (numberStack->isEmpty())
+                throw QString("Error. No numbers.");
+            
             double result = 0;
 
             if (currentSymbol == "√")
@@ -265,6 +373,7 @@ void Calculation::calculatePostfix()
                 solveLogarithm(currentSymbol);
                 continue;
             }
+            
 
             double a = numberStack->top();
             numberStack->pop();
@@ -283,9 +392,21 @@ void Calculation::calculatePostfix()
             else if (currentSymbol == "*")
                 result = a * b;
             else if (currentSymbol == "/")
+            {
+                if (a == 0)
+                    throw QString("You cannot divide by zero.");
                 result = b / a;
+            }
             else if (currentSymbol == "^")
                 result = pow(b, a);
+            else if (currentSymbol == "∧")
+                result = static_cast<int>(a) & static_cast<int>(b);
+            else if (currentSymbol == "∨")
+                result = static_cast<int>(a) | static_cast<int>(b);
+            else if (currentSymbol == "⊕")
+                result = static_cast<int>(a) ^ static_cast<int>(b);
+            else if (currentSymbol == "%")
+                result = static_cast<int>(b) % static_cast<int>(a);
             
             numberStack->push(result);
         }
@@ -393,4 +514,9 @@ bool Calculation::isLogarithm(const QString &oper)
         if (oper == logarithmOperators->at(i))
             return true;
     return false;
+}
+
+void Calculation::setProgrammerMode(ProgrammerMode *programmerMode)
+{
+    this->programmerMode = programmerMode;
 }

@@ -10,6 +10,9 @@
 #include "MathMode.hpp"
 class MathMode;
 
+#include "ProgrammerMode.hpp"
+class ProgrammerMode;
+
 class Calculation : public QObject
 {
     Q_OBJECT
@@ -19,17 +22,22 @@ public:
     QString solveExpression(const QString &expression);
 
     void setMathMode(MathMode *mathMode);
+    
+    void setProgrammerMode(ProgrammerMode *programmerMode);
 
+    // This function shares numbers and operators to vector
+    // for further distribution for stack.
+    void fillVectorNumbersAndOperators(QVector<QString> &vector, QString expr);
+    
 private:
     QString expression;
     QMap<QString, int> *precedence;
     MathMode *mathMode;
+    ProgrammerMode *programmerMode;
 
     QVector<QString> *numbersAndOperators;
 
-    // This function shares numbers and operators to vector
-    // for further distribution for stack.
-    void fillVectorNumbersAndOperators();
+    
     
     // Here makes a transform
     QStack<double> *numberStack;

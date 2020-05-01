@@ -27,7 +27,7 @@ SOURCES += \
 HEADERS += \
     CalculaterMode/MathMode.hpp \
     CalculaterMode/normalmode.h \
-    CalculaterMode/ProgrammerMode.h \
+    CalculaterMode/ProgrammerMode.hpp \
     calculation.h \
     logic.h \
     mainwindow.h

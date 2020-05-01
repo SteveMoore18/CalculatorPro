@@ -12,6 +12,9 @@
 #include "MathMode.hpp"
 class MathMode;
 
+#include "ProgrammerMode.hpp"
+class ProgrammerMode;
+
 class Logic : public QObject
 {
     Q_OBJECT
@@ -28,12 +31,17 @@ public:
     void setHistoryList(QListWidget *historyList);
     
     void setMathMode(MathMode *mathMode);
+    
+    void setProgrammerMode(ProgrammerMode *programmerMode);
 
+    void setInfixExpression(const QString &value);
+    
 private:
     QPlainTextEdit *displayEdit;
     QTextCursor cursor;
     
     MathMode *mathMode;
+    ProgrammerMode *programmerMode;
     
     bool powEntered = false;
     bool minusEntered = false;
@@ -55,6 +63,8 @@ public slots:
     void startInputBasic(const QString &textButton);
     
     void startInputMath(const QString &textButton);
+    
+    void startInputProgrammer(const QString &textButton);
 
 };
 

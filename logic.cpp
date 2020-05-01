@@ -39,6 +39,10 @@ void Logic::startInputMath(const QString &textButton)
     startingInput(textButton);
 }
 
+void Logic::startInputProgrammer(const QString &textButton)
+{
+    startingInput(textButton);
+}
 
 void Logic::startingInput(const QString &textButton)
 {
@@ -86,4 +90,15 @@ bool Logic::isOperator(const QString &str)
 void Logic::setHistoryList(QListWidget *historyList)
 {
     this->historyList = historyList;
+}
+
+void Logic::setProgrammerMode(ProgrammerMode *programmerMode)
+{
+    this->programmerMode = programmerMode;
+    calculation->setProgrammerMode(programmerMode);
+}
+
+void Logic::setInfixExpression(const QString &value)
+{
+    infixExpression = value;
 }

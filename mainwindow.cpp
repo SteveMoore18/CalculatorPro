@@ -9,7 +9,6 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-
     centralWidget = new QWidget;
 
     mainVLayout = new QVBoxLayout;
@@ -18,6 +17,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     normalMode = new NormalMode(this);
     mathMode = new MathMode(this);
+    programmerMode = new ProgrammerMode(this);
+    
     
     displayEdit = new QPlainTextEdit(this);
     historyList = new QListWidget(this);
@@ -25,11 +26,11 @@ MainWindow::MainWindow(QWidget *parent)
     tabMode = new QTabWidget(this);
     logic = new Logic(this);
     lbResult = new QLabel(this);
+    
+    programmerMode->setDisplayEdit(displayEdit);
+    programmerMode->setLbResult(lbResult);
 
     int w = screen->geometry().width() - 18;
-
-    //displayEdit->setText("2+(2*(4-2))");
-    //displayEdit->setReadOnly(true);
 
     displayEdit->setMinimumSize(w, 60);
     displayEdit->setMaximumSize(w, 90);
@@ -40,6 +41,11 @@ MainWindow::MainWindow(QWidget *parent)
     QScroller::grabGesture(historyList, QScroller::LeftMouseButtonGesture);
     historyList->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     
+    QScroller::grabGesture(displayEdit, QScroller::LeftMouseButtonGesture);
+    QScrollArea *scrollArea = new QScrollArea;
+    scrollArea->setWidget(displayEdit);
+    QScroller::grabGesture(scrollArea, QScroller::LeftMouseButtonGesture);
+    
     lbResult->setFixedSize(w, 50);
     
     mainVLayout->addWidget(historyList, 1, Qt::AlignHCenter);
@@ -48,6 +54,7 @@ MainWindow::MainWindow(QWidget *parent)
     
     tabMode->addTab(normalMode, "Basic");
     tabMode->addTab(mathMode, "Math");
+    tabMode->addTab(programmerMode, "Programmer");
     
     mainVLayout->addWidget(tabMode);
 
@@ -55,9 +62,15 @@ MainWindow::MainWindow(QWidget *parent)
     logic->setLbResult(lbResult);
     logic->setHistoryList(historyList);
     logic->setMathMode(mathMode);
+    logic->setProgrammerMode(programmerMode);
+    
+    
 
     connect(normalMode, SIGNAL(buttonClicked(QString)),  logic, SLOT(startInputBasic(QString)));
     connect(mathMode, SIGNAL(buttonClicked(QString)), logic, SLOT(startInputMath(QString)));
+    connect(programmerMode, SIGNAL(buttonClicked(QString)), logic, SLOT(startInputProgrammer(QString)));
+    
+    connect(tabMode, SIGNAL(tabBarClicked(int)), this, SLOT(on_tabBar_clicked(int)));
 
     centralWidget->setLayout(mainVLayout);
     setCentralWidget(centralWidget);
@@ -67,3 +80,23 @@ MainWindow::~MainWindow()
 {
 }
 
+
+
+void MainWindow::on_tabBar_clicked(int index)
+{
+//    logic->setInfixExpression("");
+//    displayEdit->clear();
+//    lbResult->clear();
+    
+    
+    
+    if (index == CalculatorMode::PROGRAMMER)
+    {
+        programmerMode->setNumberSystem(currentNumberSystem);
+    }
+    else
+    {
+        currentNumberSystem = programmerMode->getNumberSystem();
+        programmerMode->setNumberSystem(ProgrammerMode::NumberSystem::NONE);
+    }
+}
