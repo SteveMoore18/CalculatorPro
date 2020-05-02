@@ -54,7 +54,7 @@ void Logic::startingInput(const QString &textButton)
     }
     else if (textButton == "=")
     {
-        QString result = calculation->solveExpression(infixExpression);
+        QString result = calculation->solveExpression(displayEdit->toPlainText());
         lbResult->setText(result);
     }
     else if (textButton == "rmOneSym")
@@ -96,6 +96,7 @@ void Logic::setProgrammerMode(ProgrammerMode *programmerMode)
 {
     this->programmerMode = programmerMode;
     calculation->setProgrammerMode(programmerMode);
+    programmerMode->setCalculationMode(calculation);
 }
 
 void Logic::setInfixExpression(const QString &value)

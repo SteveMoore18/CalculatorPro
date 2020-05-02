@@ -44,6 +44,8 @@ public:
     
     void setLbResult(QLabel *lbResult);
     
+    void setCalculationMode(Calculation *calculation);
+    
 signals:
     void buttonClicked(const QString &txButton);
     

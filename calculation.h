@@ -37,7 +37,8 @@ private:
 
     QVector<QString> *numbersAndOperators;
 
-    
+    // if user using a programming mode then check and replace number system if it need
+    void replaceNumberSystem();
     
     // Here makes a transform
     QStack<double> *numberStack;

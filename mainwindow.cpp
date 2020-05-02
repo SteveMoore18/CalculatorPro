@@ -19,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent)
     mathMode = new MathMode(this);
     programmerMode = new ProgrammerMode(this);
     
+    currentNumberSystem = ProgrammerMode::NumberSystem::DEC;
     
     displayEdit = new QPlainTextEdit(this);
     historyList = new QListWidget(this);

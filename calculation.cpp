@@ -56,6 +56,7 @@ QString Calculation::solveExpression(const QString &expression)
     
 
     fillVectorNumbersAndOperators(*numbersAndOperators, expression);
+    replaceNumberSystem();
     
     try {
         transformToPostfix();
@@ -229,12 +230,21 @@ void Calculation::fillVectorNumbersAndOperators(QVector<QString> &vector, QStrin
             vector.remove(i);
     }
     
+
+    
+//    for (int i = 0; i < numbersAndOperators->size(); i++){
+//        qDebug() << numbersAndOperators->at(i);
+//    }
+}
+
+void Calculation::replaceNumberSystem()
+{
     if (programmerMode->getNumberSystem() != ProgrammerMode::NumberSystem::NONE)
     {
-    
+
         bool s = false;
         int nSystem = 0;
-        
+
         if (programmerMode->getNumberSystem() == ProgrammerMode::NumberSystem::BIN)
         {
             nSystem = 2;
@@ -251,20 +261,15 @@ void Calculation::fillVectorNumbersAndOperators(QVector<QString> &vector, QStrin
         {
             nSystem = 16;
         }
-    
-    
-        for (int i = 0; i < vector.size(); i++){
-            int number = vector.at(i).toUInt(&s, nSystem);
+
+        for (int i = 0; i < numbersAndOperators->size(); i++){
+            int number = numbersAndOperators->at(i).toUInt(&s, nSystem);
             if (s)
             {
-                vector.replace(i, QString::number(number));
+                numbersAndOperators->replace(i, QString::number(number));
             }
         }
     }
-    
-//    for (int i = 0; i < numbersAndOperators->size(); i++){
-//        qDebug() << numbersAndOperators->at(i);
-//    }
 }
 
 void Calculation::transformToPostfix()

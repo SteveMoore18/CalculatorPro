@@ -19,7 +19,7 @@ ProgrammerMode::ProgrammerMode(QWidget *parent)
     progPanel = new QGridLayout;
     vMainLayout = new QVBoxLayout;
     modeLayout = new QHBoxLayout;
-    calculation = new Calculation(this);
+    //calculation = new Calculation(this);
     
     //displayEdit = new QPlainTextEdit(this);
     //lbResult = new QLabel(this);
@@ -224,7 +224,6 @@ void ProgrammerMode::on_radioOct_clicked()
 
 void ProgrammerMode::on_radioDec_clicked()
 {
-    
     if (lbResult != nullptr)
     {
         transformInNewNumberSystem(numberSystem, NumberSystem::DEC);
@@ -306,13 +305,12 @@ void ProgrammerMode::on_radioBin_clicked()
 
 void ProgrammerMode::transformInNewNumberSystem(NumberSystem fromNSys, NumberSystem toNSys)
 {
-    qDebug() << fromNSys << " " << toNSys;
     
     if (fromNSys == toNSys)
         return;
     
     QString s = "";
-    if (lbResult != nullptr && lbResult->text().size() != 0)
+    if (lbResult != nullptr)
     {
         int f = 0;
         int t = 0;
@@ -381,6 +379,25 @@ void ProgrammerMode::transformInNewNumberSystem(NumberSystem fromNSys, NumberSys
             t = 8;
         }
         
+        numbersAndOperators.clear();
+        calculation->fillVectorNumbersAndOperators(numbersAndOperators, displayEdit->toPlainText());
+        displayEdit->clear();
+        for (int i = 0; i < numbersAndOperators.size(); i++)
+        {
+            QString currentSymbol = numbersAndOperators.at(i);
+            bool isNumber = false;
+            int number = currentSymbol.toUInt(&isNumber, f);
+            if (isNumber){
+                s.setNum(number, t);
+                s = s.toUpper();
+            }
+            else
+                s = currentSymbol;
+            
+            displayEdit->insertPlainText(s);
+        }
+        
+        s.clear();
         QString currentResult = lbResult->text();
         bool temp = false;
         int number = currentResult.toUInt(&temp, f);
@@ -389,6 +406,9 @@ void ProgrammerMode::transformInNewNumberSystem(NumberSystem fromNSys, NumberSys
         lbResult->setText(s);
         
     }
+    
+    
+        
 }
 
 void ProgrammerMode::setDisplayEdit(QPlainTextEdit *displayEdit)
@@ -419,4 +439,9 @@ void ProgrammerMode::on_btnXor_clicked()
 void ProgrammerMode::on_btnMod_clicked()
 {
     emit buttonClicked("%");
+}
+
+void ProgrammerMode::setCalculationMode(Calculation *calculation)
+{
+    this->calculation = calculation;
 }
