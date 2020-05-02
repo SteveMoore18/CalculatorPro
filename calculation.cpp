@@ -161,19 +161,19 @@ void Calculation::fillVectorNumbersAndOperators(QVector<QString> &vector, QStrin
                 vector.push_back(symbol);
             }
         }
-        else if (currentSymbol == "l" && expr.at(i + 1) == "n")
+        else if (currentSymbol == "l" and expr.at(i + 1) == "n")
         {
             currentSymbol += "n";
             i += 1;
             vector.push_back(currentSymbol);
         }
-        else if (currentSymbol == "l" && expr.at(i + 3) == "2")
+        else if (currentSymbol == "l" and expr.at(i + 3) == "2")
         {
             currentSymbol += "og2";
             i += 3;
             vector.push_back(currentSymbol);
         }
-        else if (currentSymbol == "l" && expr.at(i + 3) == "1")
+        else if (currentSymbol == "l" and expr.at(i + 3) == "1")
         {
             currentSymbol += "og10";
             i += 4;
@@ -185,7 +185,7 @@ void Calculation::fillVectorNumbersAndOperators(QVector<QString> &vector, QStrin
             i += 2;
             vector.push_back(currentSymbol);
         }
-        else if (currentSymbol == "c" && expr.at(i + 1) == "t")
+        else if (currentSymbol == "c" and expr.at(i + 1) == "t")
         {
             currentSymbol += "tg";
             i += 2;
@@ -214,7 +214,7 @@ void Calculation::fillVectorNumbersAndOperators(QVector<QString> &vector, QStrin
             continue;
         }
         else{
-            if (currentSymbol != "(" && currentSymbol != ")" && currentSymbol != "^")
+            if (currentSymbol != "(" and currentSymbol != ")" and currentSymbol != "^")
                 operators++;
             
             
@@ -315,7 +315,7 @@ void Calculation::transformToPostfix()
     {
         if (postfixVector->at(i) == "^" and i == 0)
             throw QString("Error.");
-        if (postfixVector->at(i) == "^" && postfixVector->at(i - 1) == "-")
+        if (postfixVector->at(i) == "^" and postfixVector->at(i - 1) == "-")
         {
             postfixVector->insert(i - 3, "1");
             postfixVector->insert(i + 2, "/");

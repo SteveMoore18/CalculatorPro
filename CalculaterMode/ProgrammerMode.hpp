@@ -80,6 +80,7 @@ private:
     
     NumberSystem numberSystem;
     
+    void transformInNewNumberSystem(NumberSystem fromNSys, NumberSystem toNSys);
     
 private slots:
     

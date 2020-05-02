@@ -24,6 +24,9 @@ ProgrammerMode::ProgrammerMode(QWidget *parent)
     //displayEdit = new QPlainTextEdit(this);
     //lbResult = new QLabel(this);
     
+    lbResult = nullptr;
+    displayEdit = nullptr;
+    
     btnA = new QPushButton(this);
     btnB = new QPushButton(this);
     btnC = new QPushButton(this);
@@ -192,6 +195,12 @@ void ProgrammerMode::setNumberSystem(NumberSystem numberSystem)
 
 void ProgrammerMode::on_radioOct_clicked()
 {
+    if (lbResult != nullptr)
+    {
+        transformInNewNumberSystem(numberSystem, NumberSystem::OCT);
+    }
+    
+    
     
     numberSystem = NumberSystem::OCT;
     
@@ -215,6 +224,13 @@ void ProgrammerMode::on_radioOct_clicked()
 
 void ProgrammerMode::on_radioDec_clicked()
 {
+    
+    if (lbResult != nullptr)
+    {
+        transformInNewNumberSystem(numberSystem, NumberSystem::DEC);
+    }
+    
+    
     numberSystem = NumberSystem::DEC;
     
     dynamic_cast<QPushButton*>(normalMode->getMainLayout()->itemAtPosition(1, 0)->widget())->setEnabled(true);
@@ -236,6 +252,11 @@ void ProgrammerMode::on_radioDec_clicked()
 
 void ProgrammerMode::on_radioHex_clicked()
 {
+    if (lbResult != nullptr)
+    {
+        transformInNewNumberSystem(numberSystem, NumberSystem::HEX);
+    }
+    
     numberSystem = NumberSystem::HEX;
     
     dynamic_cast<QPushButton*>(normalMode->getMainLayout()->itemAtPosition(1, 0)->widget())->setEnabled(true);
@@ -257,6 +278,12 @@ void ProgrammerMode::on_radioHex_clicked()
 
 void ProgrammerMode::on_radioBin_clicked()
 {
+    
+    if (lbResult != nullptr)
+    {
+        transformInNewNumberSystem(numberSystem, NumberSystem::BIN);
+    }
+    
     numberSystem = NumberSystem::BIN;
     
     dynamic_cast<QPushButton*>(normalMode->getMainLayout()->itemAtPosition(1, 0)->widget())->setEnabled(false);
@@ -277,6 +304,92 @@ void ProgrammerMode::on_radioBin_clicked()
     btnFF->setEnabled(false);
 }
 
+void ProgrammerMode::transformInNewNumberSystem(NumberSystem fromNSys, NumberSystem toNSys)
+{
+    qDebug() << fromNSys << " " << toNSys;
+    
+    if (fromNSys == toNSys)
+        return;
+    
+    QString s = "";
+    if (lbResult != nullptr && lbResult->text().size() != 0)
+    {
+        int f = 0;
+        int t = 0;
+        
+        if (fromNSys == NumberSystem::DEC and toNSys == NumberSystem::HEX)
+        {
+            f = 10;
+            t = 16;
+        }
+        else if (fromNSys == NumberSystem::DEC and toNSys == NumberSystem::OCT)
+        {
+            f = 10;
+            t = 8;
+        }
+        else if (fromNSys == NumberSystem::DEC and toNSys == NumberSystem::BIN)
+        {
+            f = 10;
+            t = 2;
+        }
+        
+        else if (fromNSys == NumberSystem::HEX and toNSys == NumberSystem::DEC)
+        {
+            f = 16;
+            t = 10;
+        }
+        else if (fromNSys == NumberSystem::HEX and toNSys == NumberSystem::OCT)
+        {
+            f = 16;
+            t = 8;
+        }
+        else if (fromNSys == NumberSystem::HEX and toNSys == NumberSystem::BIN)
+        {
+            f = 16;
+            t = 2;
+        }
+        
+        else if (fromNSys == NumberSystem::OCT and toNSys == NumberSystem::DEC)
+        {
+            f = 8;
+            t = 10;
+        }
+        else if (fromNSys == NumberSystem::OCT and toNSys == NumberSystem::HEX)
+        {
+            f = 8;
+            t = 16;
+        }
+        else if (fromNSys == NumberSystem::OCT and toNSys == NumberSystem::BIN)
+        {
+            f = 8;
+            t = 2;
+        }
+        
+        else if (fromNSys == NumberSystem::BIN and toNSys == NumberSystem::DEC)
+        {
+            f = 2;
+            t = 10;
+        }
+        else if (fromNSys == NumberSystem::BIN and toNSys == NumberSystem::HEX)
+        {
+            f = 2;
+            t = 16;
+        }
+        else if (fromNSys == NumberSystem::BIN and toNSys == NumberSystem::OCT)
+        {
+            f = 2;
+            t = 8;
+        }
+        
+        QString currentResult = lbResult->text();
+        bool temp = false;
+        int number = currentResult.toUInt(&temp, f);
+        s.setNum(number, t);
+        s = s.toUpper();
+        lbResult->setText(s);
+        
+    }
+}
 
 void ProgrammerMode::setDisplayEdit(QPlainTextEdit *displayEdit)
 {
