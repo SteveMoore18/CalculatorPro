@@ -42,7 +42,7 @@ public:
     
     void setDisplayEdit(QPlainTextEdit *displayEdit);
     
-    void setLbResult(QLabel *lbResult);
+    void setLbResult(QPushButton *lbResult);
     
     void setCalculationMode(Calculation *calculation);
     
@@ -56,9 +56,9 @@ private:
     QVector<QString> numbersAndOperators;
     
     QPlainTextEdit *displayEdit;
-    QLabel *lbResult;
+    QPushButton *lbResult;
     
-    QHBoxLayout *mainLayout;
+    QHBoxLayout *buttonsLayout;
     QVBoxLayout *vMainLayout;
     QHBoxLayout *modeLayout;
     QGridLayout *progPanel;
@@ -82,6 +82,7 @@ private:
     
     NumberSystem numberSystem;
     
+    // This function take current expression from displayEdit and transform to new number system
     void transformInNewNumberSystem(NumberSystem fromNSys, NumberSystem toNSys);
     
 private slots:
@@ -99,7 +100,7 @@ private slots:
     void on_btnE_clicked();
     
     void on_btnF_clicked();
-    // реализовать функции
+    
     void on_btnAnd_clicked();
     
     void on_btnOr_clicked();

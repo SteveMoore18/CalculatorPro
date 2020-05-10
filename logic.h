@@ -26,7 +26,7 @@ public:
 
     void setDisplayEdit(QPlainTextEdit *value);
 
-    void setLbResult(QLabel *value);
+    void setLbResult(QPushButton *value);
     
     void setHistoryList(QListWidget *historyList);
     
@@ -34,7 +34,6 @@ public:
     
     void setProgrammerMode(ProgrammerMode *programmerMode);
 
-    void setInfixExpression(const QString &value);
     
 private:
     QPlainTextEdit *displayEdit;
@@ -43,21 +42,14 @@ private:
     MathMode *mathMode;
     ProgrammerMode *programmerMode;
     
-    bool powEntered = false;
-    bool minusEntered = false;
-    QString infixExpression = "";
-    
-    QLabel *lbResult;
+    QPushButton *lbResult;
     QListWidget *historyList;
 
     Calculation *calculation;
 
-    bool operatorEntered = false;
-    bool dotEntered = false;
     
     void startingInput(const QString &textButton);
     
-    bool isOperator(const QString &str);
 
 public slots:
     void startInputBasic(const QString &textButton);

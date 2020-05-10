@@ -23,10 +23,9 @@ MainWindow::MainWindow(QWidget *parent)
     
     displayEdit = new QPlainTextEdit(this);
     historyList = new QListWidget(this);
-    //cbMode = new QComboBox(this);
     tabMode = new QTabWidget(this);
     logic = new Logic(this);
-    lbResult = new QLabel(this);
+    lbResult = new QPushButton(this);
     
     programmerMode->setDisplayEdit(displayEdit);
     programmerMode->setLbResult(lbResult);
@@ -47,7 +46,9 @@ MainWindow::MainWindow(QWidget *parent)
     scrollArea->setWidget(displayEdit);
     QScroller::grabGesture(scrollArea, QScroller::LeftMouseButtonGesture);
     
-    lbResult->setFixedSize(w, 50);
+    lbResult->setFixedSize(w, 80);
+    lbResult->setText("0");
+    lbResult->setStyleSheet("text-align: left;");
     
     mainVLayout->addWidget(historyList, 1, Qt::AlignHCenter);
     mainVLayout->addWidget(lbResult, 1, Qt::AlignHCenter);
@@ -65,13 +66,15 @@ MainWindow::MainWindow(QWidget *parent)
     logic->setMathMode(mathMode);
     logic->setProgrammerMode(programmerMode);
     
-    
+    mathMode->setDisplayEdit(displayEdit);
 
     connect(normalMode, SIGNAL(buttonClicked(QString)),  logic, SLOT(startInputBasic(QString)));
     connect(mathMode, SIGNAL(buttonClicked(QString)), logic, SLOT(startInputMath(QString)));
     connect(programmerMode, SIGNAL(buttonClicked(QString)), logic, SLOT(startInputProgrammer(QString)));
     
     connect(tabMode, SIGNAL(tabBarClicked(int)), this, SLOT(on_tabBar_clicked(int)));
+    
+    connect(lbResult, SIGNAL(clicked()), this, SLOT(copyResult()));
 
     centralWidget->setLayout(mainVLayout);
     setCentralWidget(centralWidget);
@@ -100,4 +103,9 @@ void MainWindow::on_tabBar_clicked(int index)
         currentNumberSystem = programmerMode->getNumberSystem();
         programmerMode->setNumberSystem(ProgrammerMode::NumberSystem::NONE);
     }
+}
+
+void MainWindow::copyResult()
+{
+    qDebug() << "Hello world";
 }

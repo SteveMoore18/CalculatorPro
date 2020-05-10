@@ -10,6 +10,8 @@
 #include <QLabel>
 #include <QTabWidget>
 #include <QScrollArea>
+#include <QPoint>
+#include <QMenu>
 
 #include "CalculaterMode/normalmode.h"
 #include "logic.h"
@@ -42,7 +44,7 @@ private:
     QPlainTextEdit *displayEdit;
     QListWidget *historyList;
     QTabWidget *tabMode;
-    QLabel *lbResult;
+    QPushButton *lbResult;
 
     QScreen *screen;
     QWidget *centralWidget;
@@ -52,6 +54,8 @@ private:
 
 private slots:
     void on_tabBar_clicked(int index);
+    
+    void copyResult();
 
 };
 #endif // MAINWINDOW_H

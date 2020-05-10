@@ -16,6 +16,8 @@ MathMode::MathMode(QWidget *parent)
     mainLayout = new QHBoxLayout;
     mathLayout = new QGridLayout;
     
+    displayEdit = nullptr;
+    
     trigMode = TrigMode::RADIAN;
     
     btnPow2 = new QPushButton(this);
@@ -88,7 +90,6 @@ MathMode::MathMode(QWidget *parent)
     connect(btnPi,   SIGNAL(clicked()), this, SLOT(on_btnPi_clicked()));
     connect(btnE,    SIGNAL(clicked()), this, SLOT(on_btnE_clicked()));
     connect(btnTrigMode, SIGNAL(clicked()), this, SLOT(on_btnTrigMode_clicked()));
-    connect(btnCtg,  SIGNAL(clicked()), this, SLOT(on_btnCtg_clicked()));
     connect(btnLog2, SIGNAL(clicked()), this, SLOT(on_btnLog2_clicked()));
     connect(btnLn,   SIGNAL(clicked()), this, SLOT(on_btnLn_clicked()));
     connect(btnLog10, SIGNAL(clicked()), this, SLOT(on_btnLog10_clicked()));
@@ -107,12 +108,12 @@ void MathMode::on_normalMode_clicked(const QString &textButton)
 void MathMode::on_btnPow2_clicked()
 {
     btnPowClicked = true;
-    emit buttonClicked("^");
+    emit buttonClicked("^(");
 }
 
 void MathMode::on_btnSqrt_clicked()
 {
-    emit buttonClicked("√");
+    emit buttonClicked("√(");
 }
 
 void MathMode::on_btnSin_clicked()
@@ -177,4 +178,9 @@ void MathMode::on_btnLn_clicked()
 MathMode::TrigMode MathMode::getTrigMode() const
 {
     return trigMode;
+}
+
+void MathMode::setDisplayEdit(QPlainTextEdit *displayEdit)
+{
+    this->displayEdit = displayEdit;
 }

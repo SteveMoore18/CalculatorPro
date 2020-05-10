@@ -15,14 +15,10 @@ ProgrammerMode::ProgrammerMode(QWidget *parent)
     normalMode = new NormalMode(this);
     normalMode->getMainLayout()->setMargin(0);
     
-    mainLayout = new QHBoxLayout;
+    buttonsLayout = new QHBoxLayout;
     progPanel = new QGridLayout;
     vMainLayout = new QVBoxLayout;
     modeLayout = new QHBoxLayout;
-    //calculation = new Calculation(this);
-    
-    //displayEdit = new QPlainTextEdit(this);
-    //lbResult = new QLabel(this);
     
     lbResult = nullptr;
     displayEdit = nullptr;
@@ -38,6 +34,10 @@ ProgrammerMode::ProgrammerMode(QWidget *parent)
     btnXor = new QPushButton(this);
     btnMod = new QPushButton(this);
     
+    radioOctMode = new QRadioButton(this);
+    radioDecMode = new QRadioButton(this);
+    radioHexMode = new QRadioButton(this);
+    radioBinMode = new QRadioButton(this);
     
     btnA->setText("A");
     btnB->setText("B");
@@ -51,10 +51,7 @@ ProgrammerMode::ProgrammerMode(QWidget *parent)
     btnXor->setText("XOR (⊕)");
     btnMod->setText("MOD (%)");
     
-    radioOctMode = new QRadioButton(this);
-    radioDecMode = new QRadioButton(this);
-    radioHexMode = new QRadioButton(this);
-    radioBinMode = new QRadioButton(this);
+    
     
     radioOctMode->setText("Oct");
     radioDecMode->setText("Dec");
@@ -100,13 +97,12 @@ ProgrammerMode::ProgrammerMode(QWidget *parent)
     progPanel->addWidget(btnMod, 3, 0);
     
     
-    mainLayout->addLayout(progPanel);
-    mainLayout->addWidget(normalMode);
-    
+    buttonsLayout->addLayout(progPanel);
+    buttonsLayout->addWidget(normalMode);
     
     
     vMainLayout->addLayout(modeLayout);
-    vMainLayout->addLayout(mainLayout);
+    vMainLayout->addLayout(buttonsLayout);
     
     connect(normalMode, SIGNAL(buttonClicked(QString)), this, SLOT(on_normalMode_clicked(QString)));
     connect(btnFF, SIGNAL(clicked()), this, SLOT(on_btnFF_clicked()));
@@ -379,15 +375,19 @@ void ProgrammerMode::transformInNewNumberSystem(NumberSystem fromNSys, NumberSys
             t = 8;
         }
         
+        // Transform expression in displayEdit
         numbersAndOperators.clear();
         calculation->fillVectorNumbersAndOperators(numbersAndOperators, displayEdit->toPlainText());
         displayEdit->clear();
         for (int i = 0; i < numbersAndOperators.size(); i++)
         {
+            // Take symbol
             QString currentSymbol = numbersAndOperators.at(i);
             bool isNumber = false;
+            // translate from the current number system to dec
             int number = currentSymbol.toUInt(&isNumber, f);
             if (isNumber){
+                // translate to choosed number system
                 s.setNum(number, t);
                 s = s.toUpper();
             }
@@ -397,6 +397,7 @@ void ProgrammerMode::transformInNewNumberSystem(NumberSystem fromNSys, NumberSys
             displayEdit->insertPlainText(s);
         }
         
+        // Transform expression in lbResult
         s.clear();
         QString currentResult = lbResult->text();
         bool temp = false;
@@ -416,7 +417,7 @@ void ProgrammerMode::setDisplayEdit(QPlainTextEdit *displayEdit)
     this->displayEdit = displayEdit;
 }
 
-void ProgrammerMode::setLbResult(QLabel *lbResult)
+void ProgrammerMode::setLbResult(QPushButton *lbResult)
 {
     this->lbResult = lbResult;
 }

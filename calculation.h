@@ -51,10 +51,6 @@ private:
     QString errorMessage;
     bool checkBrackets();
     
-    int numbers = 0;
-    int operators = 0;
-    bool checkNumbersAndOperators();
-    
     double solveTrigonometric(const QString &oper);
     
     QVector<QString> *trigOperators;

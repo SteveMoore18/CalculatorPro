@@ -16,6 +16,9 @@
 #include "normalmode.h"
 class NormalMode;
 
+#include <QPlainTextEdit>
+
+
 class MathMode : public QWidget
 {
     Q_OBJECT
@@ -31,11 +34,15 @@ public:
     
     TrigMode getTrigMode() const;
     
+    void setDisplayEdit(QPlainTextEdit *displayEdit);
+    
 signals:
     void buttonClicked(const QString &textButton);
     
 private:
     NormalMode *normalMode;
+    
+    QPlainTextEdit *displayEdit;
     
     QPushButton *btnPow2;
     QPushButton *btnSqrt;

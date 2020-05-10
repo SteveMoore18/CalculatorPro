@@ -58,22 +58,30 @@ QString Calculation::solveExpression(const QString &expression)
     fillVectorNumbersAndOperators(*numbersAndOperators, expression);
     replaceNumberSystem();
     
-    try {
+    try
+    {
+        
         transformToPostfix();
+        
     } catch (QString error) {
+        
         errorMessage = error;
         return errorMessage;
+        
     }
     
     
     
-    try {
+    try
+    {
         calculatePostfix();
+        
     } catch (QString error) {
+        
         errorMessage = error;
         return errorMessage;
+        
     }
-    
     
 
     if (!numberStack->isEmpty())
@@ -118,7 +126,6 @@ QString Calculation::solveExpression(const QString &expression)
         
         return s;
         
-        //return QString::number(numberStack->top());
     }
     else
     {
@@ -129,11 +136,7 @@ QString Calculation::solveExpression(const QString &expression)
 
 void Calculation::fillVectorNumbersAndOperators(QVector<QString> &vector, QString expr)
 {
-    
-    numbers = 0;
-    operators = 0;
-    
-    QString symbol = "";
+    QString symbol = "0";
     QString currentSymbol = "";
     bool isNumber = false;
     for (int i = 0; i < expr.size(); i++)
@@ -152,7 +155,6 @@ void Calculation::fillVectorNumbersAndOperators(QVector<QString> &vector, QStrin
                 vector.push_back(symbol);
             }
             
-            numbers++;
         }
         else if (currentSymbol == "A" || currentSymbol == "B" || currentSymbol == "C" ||
                  currentSymbol == "D" || currentSymbol == "E" || currentSymbol == "F")
@@ -215,16 +217,15 @@ void Calculation::fillVectorNumbersAndOperators(QVector<QString> &vector, QStrin
             continue;
         }
         else{
-            if (currentSymbol != "(" and currentSymbol != ")" and currentSymbol != "^")
-                operators++;
-            
-            
-            vector.push_back(symbol);
+            if (currentSymbol != "(")
+                vector.push_back(symbol);
+
             vector.push_back(currentSymbol);
-            symbol = "";
+            symbol = "0";
         }
     }
 
+    // Removing empty cells
     for (int i = 0; i < vector.size(); i++){
         if (vector.at(i) == "" or vector.at(i) == " ")
             vector.remove(i);
@@ -232,9 +233,9 @@ void Calculation::fillVectorNumbersAndOperators(QVector<QString> &vector, QStrin
     
 
     
-//    for (int i = 0; i < numbersAndOperators->size(); i++){
-//        qDebug() << numbersAndOperators->at(i);
-//    }
+    for (int i = 0; i < numbersAndOperators->size(); i++){
+        qDebug() << numbersAndOperators->at(i);
+    }
 }
 
 void Calculation::replaceNumberSystem()
@@ -263,6 +264,7 @@ void Calculation::replaceNumberSystem()
         }
 
         for (int i = 0; i < numbersAndOperators->size(); i++){
+            // take number from vector and translate to dec system
             int number = numbersAndOperators->at(i).toUInt(&s, nSystem);
             if (s)
             {
@@ -297,6 +299,7 @@ void Calculation::transformToPostfix()
         }
         else
         {
+
             while (!operatorStack->isEmpty()
                    and precedence->value(operatorStack->top()) >= precedence->value(currentSymbol))
             {
@@ -328,11 +331,12 @@ void Calculation::transformToPostfix()
         }
     }
 
-//    for (int i = 0; i < postfixVector->size(); i++)
-//    {
-//        s += postfixVector->at(i) + " ";
-//    }
-//    qDebug() << s;
+    qDebug() << " ";
+    for (int i = 0; i < postfixVector->size(); i++)
+    {
+        s += postfixVector->at(i) + " ";
+    }
+    qDebug() << s;
 
 }
 
@@ -371,52 +375,55 @@ void Calculation::calculatePostfix()
             {
                 solveTrigonometric(currentSymbol);
                 continue;
-            }
-            
-            if (isLogarithm(currentSymbol))
+            }else if (isLogarithm(currentSymbol))
             {
                 solveLogarithm(currentSymbol);
                 continue;
             }
-            
-
-            double a = numberStack->top();
-            numberStack->pop();
-            
-            double b = 0;
-            if (!numberStack->isEmpty())
+            else
             {
-                b = numberStack->top();
-                numberStack->pop();
+                if (!numberStack->isEmpty())
+                {
+                    double a = numberStack->top();
+                    numberStack->pop();
+                    
+                    if (numberStack->isEmpty())
+                        throw QString("Error!");
+                    
+                    double b = numberStack->top();
+                    numberStack->pop();
+                    
+                    
+                    
+                    if (currentSymbol == "+")
+                        result = a + b;
+                    else if (currentSymbol == "-")
+                        result = b - a;
+                    else if (currentSymbol == "*")
+                        result = a * b;
+                    else if (currentSymbol == "/")
+                    {
+                        if (a == 0)
+                            throw QString("You cannot divide by zero.");
+                        result = b / a;
+                    }
+                    else if (currentSymbol == "^")
+                        result = pow(b, a);
+                    else if (currentSymbol == "∧")
+                        result = static_cast<int>(a) & static_cast<int>(b);
+                    else if (currentSymbol == "∨")
+                        result = static_cast<int>(a) | static_cast<int>(b);
+                    else if (currentSymbol == "⊕")
+                        result = static_cast<int>(a) ^ static_cast<int>(b);
+                    else if (currentSymbol == "%")
+                        result = static_cast<int>(b) % static_cast<int>(a);
+                    
+                    numberStack->push(result);
+                }
+                
             }
-            
-            if (currentSymbol == "+")
-                result = a + b;
-            else if (currentSymbol == "-")
-                result = b - a;
-            else if (currentSymbol == "*")
-                result = a * b;
-            else if (currentSymbol == "/")
-            {
-                if (a == 0)
-                    throw QString("You cannot divide by zero.");
-                result = b / a;
-            }
-            else if (currentSymbol == "^")
-                result = pow(b, a);
-            else if (currentSymbol == "∧")
-                result = static_cast<int>(a) & static_cast<int>(b);
-            else if (currentSymbol == "∨")
-                result = static_cast<int>(a) | static_cast<int>(b);
-            else if (currentSymbol == "⊕")
-                result = static_cast<int>(a) ^ static_cast<int>(b);
-            else if (currentSymbol == "%")
-                result = static_cast<int>(b) % static_cast<int>(a);
-            
-            numberStack->push(result);
         }
     }
-    
 }
 
 
@@ -443,16 +450,6 @@ bool Calculation::checkBrackets()
     return true;
 }
 
-bool Calculation::checkNumbersAndOperators()
-{
-    
-    if (operators >= numbers){
-        errorMessage = "Error with numbers or operators.";
-        return false;
-    }
-    
-    return true;
-}
 
 void Calculation::setMathMode(MathMode *mathMode)
 {

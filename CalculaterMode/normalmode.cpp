@@ -47,6 +47,18 @@ NormalMode::NormalMode(QWidget *parent) : QWidget(parent)
     btnDot->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
     btnEqual->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
 
+//    int bsize = 150;
+//    btn0->setFixedSize(bsize, bsize);
+//    btn1->setFixedSize(bsize, bsize);
+//    btn2->setFixedSize(bsize, bsize);
+//    btn3->setFixedSize(bsize, bsize);
+//    btn4->setFixedSize(bsize, bsize);
+//    btn5->setFixedSize(bsize, bsize);
+//    btn6->setFixedSize(bsize, bsize);
+//    btn7->setFixedSize(bsize, bsize);
+//    btn8->setFixedSize(bsize, bsize);
+//    btn9->setFixedSize(bsize, bsize);
+    
 
     mainLayout->addWidget(btnClear, 0, 0);
     mainLayout->addWidget(btnBracketOpen, 0, 1);
