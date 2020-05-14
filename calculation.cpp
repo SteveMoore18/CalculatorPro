@@ -229,13 +229,15 @@ void Calculation::fillVectorNumbersAndOperators(QVector<QString> &vector, QStrin
     for (int i = 0; i < vector.size(); i++){
         if (vector.at(i) == "" or vector.at(i) == " ")
             vector.remove(i);
+        if (vector.at(i) == ")" and i + 1 != vector.size())
+            vector.remove(i + 1);
     }
     
 
-    
-//    for (int i = 0; i < numbersAndOperators->size(); i++){
-//        qDebug() << numbersAndOperators->at(i);
-//    }
+    qDebug() << " ";
+    for (int i = 0; i < numbersAndOperators->size(); i++){
+        qDebug() << numbersAndOperators->at(i);
+    }
 }
 
 void Calculation::replaceNumberSystem()
@@ -331,12 +333,12 @@ void Calculation::transformToPostfix()
         }
     }
 
-//    qDebug() << " ";
-//    for (int i = 0; i < postfixVector->size(); i++)
-//    {
-//        s += postfixVector->at(i) + " ";
-//    }
-//    qDebug() << s;
+    qDebug() << " ";
+    for (int i = 0; i < postfixVector->size(); i++)
+    {
+        s += postfixVector->at(i) + " ";
+    }
+    qDebug() << s;
 
 }
 
