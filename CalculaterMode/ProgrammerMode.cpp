@@ -123,9 +123,15 @@ ProgrammerMode::ProgrammerMode(QWidget *parent)
     connect(radioHexMode, SIGNAL(clicked()), this, SLOT(on_radioHex_clicked()));
     connect(radioBinMode, SIGNAL(clicked()), this, SLOT(on_radioBin_clicked()));
     
-    numberSystem = NumberSystem::DEC;
+    numberSystem = NumberSystem::NONE;
     radioDecMode->setChecked(true);
-    on_radioDec_clicked();
+    btnA->setEnabled(false);
+    btnB->setEnabled(false);
+    btnC->setEnabled(false);
+    btnD->setEnabled(false);
+    btnE->setEnabled(false);
+    btnF->setEnabled(false);
+    btnFF->setEnabled(false);
     
     setLayout(vMainLayout);
 }
@@ -379,6 +385,13 @@ void ProgrammerMode::transformInNewNumberSystem(NumberSystem fromNSys, NumberSys
         numbersAndOperators.clear();
         calculation->fillVectorNumbersAndOperators(numbersAndOperators, displayEdit->toPlainText());
         displayEdit->clear();
+        
+        if (f == 0 and t == 0)
+        {
+            lbResult->setText("Unknown error.");
+            return;
+        }
+        
         for (int i = 0; i < numbersAndOperators.size(); i++)
         {
             // Take symbol
@@ -396,6 +409,8 @@ void ProgrammerMode::transformInNewNumberSystem(NumberSystem fromNSys, NumberSys
             
             displayEdit->insertPlainText(s);
         }
+        
+        
         
         // Transform expression in lbResult
         s.clear();

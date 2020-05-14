@@ -46,6 +46,9 @@ public:
     
     void setCalculationMode(Calculation *calculation);
     
+    // This function take current expression from displayEdit and transform to new number system
+    void transformInNewNumberSystem(NumberSystem fromNSys, NumberSystem toNSys);
+    
 signals:
     void buttonClicked(const QString &txButton);
     
@@ -82,8 +85,7 @@ private:
     
     NumberSystem numberSystem;
     
-    // This function take current expression from displayEdit and transform to new number system
-    void transformInNewNumberSystem(NumberSystem fromNSys, NumberSystem toNSys);
+
     
 private slots:
     

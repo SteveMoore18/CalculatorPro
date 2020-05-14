@@ -113,13 +113,13 @@ QString Calculation::solveExpression(const QString &expression)
         if (number < 0)
         {
             int positiveNumber = abs(number);
-            s.setNum((uint)positiveNumber, numberSystem);
+            s.setNum(positiveNumber, numberSystem);
             s = s.toUpper();
             s = "-" + s;
         }
         else
         {
-            s.setNum((uint)number, numberSystem);
+            s.setNum(number, numberSystem);
             s = s.toUpper();
         }
         
@@ -233,9 +233,9 @@ void Calculation::fillVectorNumbersAndOperators(QVector<QString> &vector, QStrin
     
 
     
-    for (int i = 0; i < numbersAndOperators->size(); i++){
-        qDebug() << numbersAndOperators->at(i);
-    }
+//    for (int i = 0; i < numbersAndOperators->size(); i++){
+//        qDebug() << numbersAndOperators->at(i);
+//    }
 }
 
 void Calculation::replaceNumberSystem()
@@ -331,12 +331,12 @@ void Calculation::transformToPostfix()
         }
     }
 
-    qDebug() << " ";
-    for (int i = 0; i < postfixVector->size(); i++)
-    {
-        s += postfixVector->at(i) + " ";
-    }
-    qDebug() << s;
+//    qDebug() << " ";
+//    for (int i = 0; i < postfixVector->size(); i++)
+//    {
+//        s += postfixVector->at(i) + " ";
+//    }
+//    qDebug() << s;
 
 }
 

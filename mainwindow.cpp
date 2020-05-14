@@ -97,11 +97,17 @@ void MainWindow::on_tabBar_clicked(int index)
     if (index == CalculatorMode::PROGRAMMER)
     {
         programmerMode->setNumberSystem(currentNumberSystem);
+        programmerMode->transformInNewNumberSystem(ProgrammerMode::NumberSystem::DEC, currentNumberSystem);
     }
     else
     {
-        currentNumberSystem = programmerMode->getNumberSystem();
-        programmerMode->setNumberSystem(ProgrammerMode::NumberSystem::NONE);
+        if (programmerMode->getNumberSystem() != ProgrammerMode::NumberSystem::NONE)
+        {
+            currentNumberSystem = programmerMode->getNumberSystem();
+            programmerMode->transformInNewNumberSystem(currentNumberSystem, ProgrammerMode::NumberSystem::DEC);
+            programmerMode->setNumberSystem(ProgrammerMode::NumberSystem::NONE);
+        }
+        
     }
 }
 
