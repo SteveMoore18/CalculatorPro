@@ -37,7 +37,8 @@ private:
 
     QVector<QString> *numbersAndOperators;
 
-    // if user using a programming mode then check and replace number system if it need
+    // if the user uses the programming mode, they are converted
+    // into a vector from the selected number system to decimal in order to make calculations easier
     void replaceNumberSystem();
     
     // Here makes a transform

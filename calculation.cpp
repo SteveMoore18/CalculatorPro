@@ -106,9 +106,11 @@ QString Calculation::solveExpression(const QString &expression)
         }
         else
         {
+            // if mode is not programmer then just return result
             return QString::number(numberStack->top(), 'g', 20);
         }
         
+        // if mode is programmer then return result in current number system
         int number = numberStack->top();
         if (number < 0)
         {
@@ -234,10 +236,10 @@ void Calculation::fillVectorNumbersAndOperators(QVector<QString> &vector, QStrin
     }
     
 
-    qDebug() << " ";
-    for (int i = 0; i < numbersAndOperators->size(); i++){
-        qDebug() << numbersAndOperators->at(i);
-    }
+//    qDebug() << " ";
+//    for (int i = 0; i < numbersAndOperators->size(); i++){
+//        qDebug() << numbersAndOperators->at(i);
+//    }
 }
 
 void Calculation::replaceNumberSystem()
@@ -333,12 +335,12 @@ void Calculation::transformToPostfix()
         }
     }
 
-    qDebug() << " ";
-    for (int i = 0; i < postfixVector->size(); i++)
-    {
-        s += postfixVector->at(i) + " ";
-    }
-    qDebug() << s;
+//    qDebug() << " ";
+//    for (int i = 0; i < postfixVector->size(); i++)
+//    {
+//        s += postfixVector->at(i) + " ";
+//    }
+//    qDebug() << s;
 
 }
 
