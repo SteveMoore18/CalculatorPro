@@ -19,6 +19,9 @@ MainWindow::MainWindow(QWidget *parent)
     mathMode = new MathMode(this);
     programmerMode = new ProgrammerMode(this);
     
+    clipboard = QApplication::clipboard();
+    timerCopied = new QTimer(this);
+    
     currentNumberSystem = ProgrammerMode::NumberSystem::DEC;
     
     displayEdit = new QPlainTextEdit(this);
@@ -75,6 +78,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(tabMode, SIGNAL(tabBarClicked(int)), this, SLOT(on_tabBar_clicked(int)));
     
     connect(lbResult, SIGNAL(clicked()), this, SLOT(copyResult()));
+    
+    connect(timerCopied, SIGNAL(timeout()), this, SLOT(on_timerCopiedTimeout()));
+    connect(historyList, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(copyExpression(QListWidgetItem*)));
 
     centralWidget->setLayout(mainVLayout);
     setCentralWidget(centralWidget);
@@ -113,5 +119,47 @@ void MainWindow::on_tabBar_clicked(int index)
 
 void MainWindow::copyResult()
 {
-    qDebug() << "Hello world";
+    if (lbResult->text() != "Copied!")
+    {
+        clipboard->setText(lbResult->text());
+        tempsResult = lbResult->text();
+        lbResult->setText("Copied!");
+        timerCopied->start(1000);
+    }
+}
+
+void MainWindow::on_timerCopiedTimeout()
+{
+    lbResult->setText(tempsResult);
+    timerCopied->stop();
+}
+
+void MainWindow::copyExpression(QListWidgetItem *item)
+{
+    if (lbResult->text() != "Copied!")
+    {
+        clipboard->setText(item->text());
+        tempsResult = lbResult->text();
+        lbResult->setText("Copied!");
+        
+        timerCopied->start(1000);
+    }
+    
+    
+    QString onlyExpression = "";
+    for (int i = 0; i < item->text().size(); i++)
+    {
+        QString curr = QString(item->text()[i]);
+        if (curr == "=")
+            break;
+        onlyExpression += curr;
+    }
+    
+    displayEdit->setPlainText(onlyExpression);
+    
+    QTextCursor cursor = displayEdit->textCursor();
+    cursor.setPosition(onlyExpression.size() - 1);
+    displayEdit->setTextCursor(cursor);
+    
+    
 }

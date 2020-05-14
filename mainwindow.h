@@ -12,6 +12,9 @@
 #include <QScrollArea>
 #include <QPoint>
 #include <QMenu>
+#include <QClipboard>
+#include <QApplication>
+#include <QTimer>
 
 #include "CalculaterMode/normalmode.h"
 #include "logic.h"
@@ -39,6 +42,8 @@ private:
     NormalMode *normalMode;
     MathMode *mathMode;
     ProgrammerMode *programmerMode;
+    Logic *logic;
+    
     ProgrammerMode::NumberSystem currentNumberSystem;
     
     QPlainTextEdit *displayEdit;
@@ -49,13 +54,18 @@ private:
     QScreen *screen;
     QWidget *centralWidget;
 
-    Logic *logic;
-
+    QClipboard *clipboard;
+    QTimer *timerCopied;
+    QString tempsResult;
 
 private slots:
     void on_tabBar_clicked(int index);
     
     void copyResult();
+    
+    void copyExpression(QListWidgetItem *item);
+    
+    void on_timerCopiedTimeout();
 
 };
 #endif // MAINWINDOW_H

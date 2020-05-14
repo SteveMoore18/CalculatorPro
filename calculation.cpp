@@ -106,7 +106,7 @@ QString Calculation::solveExpression(const QString &expression)
         }
         else
         {
-            return QString::number(numberStack->top());
+            return QString::number(numberStack->top(), 'g', 20);
         }
         
         int number = numberStack->top();
