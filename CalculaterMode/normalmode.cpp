@@ -14,18 +14,24 @@ NormalMode::NormalMode(QWidget *parent) : QWidget(parent)
     btn7 = new QPushButton("7");
     btn8 = new QPushButton("8");
     btn9 = new QPushButton("9");
-
-    btnClear = new QPushButton("C");
+    
+    btnClear = new QPushButton();
     btnBracketOpen = new QPushButton("(");
     btnBracketClose = new QPushButton(")");
     btnPlus = new QPushButton("+");
     btnMinus = new QPushButton("-");
-    btnMultiply = new QPushButton("*");
-    btnDivision = new QPushButton("/");
-    btnRemoveOneSym = new QPushButton("<-");
+    btnMultiply = new QPushButton("×");
+    btnDivision = new QPushButton("÷");
+    btnRemoveOneSym = new QPushButton();
     btnDot = new QPushButton(".");
     btnEqual = new QPushButton("=");
 
+    btnClear->setIcon(QIcon(QPixmap(":/images/Appearance/Images/btnRemoveAll.png")));
+    btnClear->setIconSize(QSize(30, 30));
+    
+    btnRemoveOneSym->setIcon(QIcon(QPixmap(":/images/Appearance/Images/rmOneSym.png")));
+    btnRemoveOneSym->setIconSize(QSize(35, 35));
+    
     btn0->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
     btn1->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
     btn2->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
@@ -104,6 +110,51 @@ NormalMode::NormalMode(QWidget *parent) : QWidget(parent)
     connect(btnDot, SIGNAL(clicked()), this, SLOT(on_btnDot_clicked()));
     connect(btnEqual, SIGNAL(clicked()), this, SLOT(on_btnEqual_clicked()));
 
+    
+    numberButtonColor = QColor("#e8eaeb");
+    numberButtonClickedColor = QColor("#dddfe3");
+    otherButtonColor = QColor("#d2d4d8");
+    otherButtonClickedColor = QColor("#c4c6c9");
+    
+    QFile buttonStyleFile(":/styles/Appearance/CSS/ButtonStyle.css");
+    if (buttonStyleFile.open(QIODevice::ReadOnly))
+    {
+        QString text = buttonStyleFile.readAll();
+        
+        btnStyleForNumber = text;
+        btnStyleForNumber = btnStyleForNumber.arg(numberButtonColor.name()).arg(numberButtonClickedColor.name());
+        
+        btnStyleForOther = text;
+        btnStyleForOther = btnStyleForOther.arg(otherButtonColor.name()).arg(otherButtonClickedColor.name());
+        
+        btn0->setStyleSheet(btnStyleForNumber);
+        btn1->setStyleSheet(btnStyleForNumber);
+        btn2->setStyleSheet(btnStyleForNumber);
+        btn3->setStyleSheet(btnStyleForNumber);
+        btn4->setStyleSheet(btnStyleForNumber);
+        btn5->setStyleSheet(btnStyleForNumber);
+        btn6->setStyleSheet(btnStyleForNumber);
+        btn7->setStyleSheet(btnStyleForNumber);
+        btn8->setStyleSheet(btnStyleForNumber);
+        btn9->setStyleSheet(btnStyleForNumber);
+        
+        btnClear->setStyleSheet(btnStyleForOther);
+        btnBracketOpen->setStyleSheet(btnStyleForOther);
+        btnBracketClose->setStyleSheet(btnStyleForOther);
+        btnPlus->setStyleSheet(btnStyleForOther);
+        btnMinus->setStyleSheet(btnStyleForOther);
+        btnMultiply->setStyleSheet(btnStyleForOther);
+        btnDivision->setStyleSheet(btnStyleForOther);
+        btnRemoveOneSym->setStyleSheet(btnStyleForOther);
+        btnDot->setStyleSheet(btnStyleForOther);
+        btnEqual->setStyleSheet(btnStyleForOther);
+        
+    }
+    buttonStyleFile.close();
+    
+    
+    this->setStyleSheet("background-color: white;");
+    
     setLayout(mainLayout);
 }
 
@@ -194,12 +245,12 @@ void NormalMode::on_btnMinus_clicked()
 
 void NormalMode::on_btnMultiply_clicked()
 {
-    emit buttonClicked("*");
+    emit buttonClicked("×");
 }
 
 void NormalMode::on_btnDivision_clicked()
 {
-    emit buttonClicked("/");
+    emit buttonClicked("÷");
     
 }
 
@@ -226,4 +277,24 @@ QGridLayout *NormalMode::getMainLayout() const
 void NormalMode::removeDotButton()
 {
     delete btnDot;
+}
+
+QString NormalMode::getOtherButtonStyle() const
+{
+    return btnStyleForOther;
+}
+
+QString NormalMode::getNumberButtonStyle() const
+{
+    return btnStyleForNumber;
+}
+
+QColor NormalMode::getNumberButtonColor() const
+{
+    return numberButtonColor;
+}
+
+QColor NormalMode::getOtherButtonColor() const
+{
+    return otherButtonColor;
 }

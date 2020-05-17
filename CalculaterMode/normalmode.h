@@ -5,6 +5,7 @@
 #include <QWidget>
 #include <QPushButton>
 #include <QGridLayout>
+#include <QFile>
 
 class NormalMode : public QWidget
 {
@@ -17,7 +18,15 @@ public:
     QGridLayout *getMainLayout() const;
     
     void removeDotButton();
+    
+    QString getOtherButtonStyle() const;
+    
+    QString getNumberButtonStyle() const;
 
+    QColor getNumberButtonColor() const;
+    
+    QColor getOtherButtonColor() const;
+    
 signals:
     void buttonClicked(const QString &txButton);
     
@@ -69,6 +78,15 @@ private:
     QPushButton *btnRemoveOneSym;
     QPushButton *btnDot;
     QPushButton *btnEqual;
+    
+    QString btnStyleForOther;
+    QString btnStyleForNumber;
+    
+    QColor numberButtonColor;
+    QColor numberButtonClickedColor;
+    
+    QColor otherButtonColor;
+    QColor otherButtonClickedColor;
 
 };
 

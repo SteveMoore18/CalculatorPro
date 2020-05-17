@@ -82,6 +82,53 @@ MainWindow::MainWindow(QWidget *parent)
     connect(timerCopied, SIGNAL(timeout()), this, SLOT(on_timerCopiedTimeout()));
     connect(historyList, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(copyExpression(QListWidgetItem*)));
 
+    this->setStyleSheet("background-color: white;");
+    tabMode->tabBar()->setExpanding(true);
+
+//    width: 160px;
+//    height: 40px;
+    
+    QFile tabBarStyle(":/styles/Appearance/CSS/TabBarStyle.css");
+    if (tabBarStyle.open(QIODevice::ReadOnly))
+    {
+        QString css = tabBarStyle.readAll();
+        css = css.arg(normalMode->getNumberButtonColor().name());
+        
+        tabMode->setStyleSheet(css);
+    }
+    tabBarStyle.close();
+    
+    QFile textEditStyle(":/styles/Appearance/CSS/TextEdit.css");
+    if (textEditStyle.open(QIODevice::ReadOnly))
+    {
+        QString css = textEditStyle.readAll();
+        css = css.arg(normalMode->getNumberButtonColor().name());
+        
+        displayEdit->setStyleSheet(css);
+    }
+    textEditStyle.close();
+    
+    QFile resultButtonStyle(":/styles/Appearance/CSS/ResultButton.css");
+    if (resultButtonStyle.open(QIODevice::ReadOnly))
+    {
+        QString css = resultButtonStyle.readAll();
+        css = css.arg(normalMode->getNumberButtonColor().name());
+        
+        lbResult->setStyleSheet(css);
+    }
+    resultButtonStyle.close();
+    
+    QFile listWidgetStyle(":/styles/Appearance/CSS/ListWidget.css");
+    if (listWidgetStyle.open(QIODevice::ReadOnly))
+    {
+        QString css = listWidgetStyle.readAll();
+        css = css.arg(normalMode->getNumberButtonColor().name()).arg(normalMode->getOtherButtonColor().name());
+        
+        historyList->setStyleSheet(css);
+    }
+    listWidgetStyle.close();
+    
+    
     centralWidget->setLayout(mainVLayout);
     setCentralWidget(centralWidget);
 }

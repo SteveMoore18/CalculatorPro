@@ -30,12 +30,12 @@ Calculation::Calculation(QObject *parent) : QObject(parent)
     precedence->insert("sin", 4);
     precedence->insert("√", 4);
     precedence->insert("^", 4);
-    precedence->insert("*", 3);
+    precedence->insert("×", 3);
     precedence->insert("%", 3);
     precedence->insert("∧", 3);
     precedence->insert("∨", 3);
     precedence->insert("⊕", 3);
-    precedence->insert("/", 3);
+    precedence->insert("÷", 3);
     precedence->insert("+", 2);
     precedence->insert("-", 2);
     precedence->insert("(", 1);
@@ -226,12 +226,13 @@ void Calculation::fillVectorNumbersAndOperators(QVector<QString> &vector, QStrin
             symbol = "0";
         }
     }
-
+    
+    
     // Removing empty cells
     for (int i = 0; i < vector.size(); i++){
         if (vector.at(i) == "" or vector.at(i) == " ")
             vector.remove(i);
-        if (vector.at(i) == ")" and i + 1 != vector.size())
+        else if (vector.at(i) == ")" and i + 1 != vector.size())
             vector.remove(i + 1);
     }
     
@@ -330,7 +331,7 @@ void Calculation::transformToPostfix()
         if (postfixVector->at(i) == "^" and postfixVector->at(i - 1) == "-")
         {
             postfixVector->insert(i - 3, "1");
-            postfixVector->insert(i + 2, "/");
+            postfixVector->insert(i + 2, "÷");
             postfixVector->remove(i);
         }
     }
@@ -403,9 +404,9 @@ void Calculation::calculatePostfix()
                         result = a + b;
                     else if (currentSymbol == "-")
                         result = b - a;
-                    else if (currentSymbol == "*")
+                    else if (currentSymbol == "×")
                         result = a * b;
-                    else if (currentSymbol == "/")
+                    else if (currentSymbol == "÷")
                     {
                         if (a == 0)
                             throw QString("You cannot divide by zero.");

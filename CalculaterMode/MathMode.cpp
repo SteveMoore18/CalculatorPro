@@ -95,7 +95,19 @@ MathMode::MathMode(QWidget *parent)
     connect(btnLog10, SIGNAL(clicked()), this, SLOT(on_btnLog10_clicked()));
     
     connect(normalMode, SIGNAL(buttonClicked(QString)), this, SLOT(on_normalMode_clicked(QString)));
-
+    
+    btnPow2->setStyleSheet(normalMode->getOtherButtonStyle());
+    btnSqrt->setStyleSheet(normalMode->getOtherButtonStyle());
+    btnSin->setStyleSheet(normalMode->getOtherButtonStyle());
+    btnCos->setStyleSheet(normalMode->getOtherButtonStyle());
+    btnTan->setStyleSheet(normalMode->getOtherButtonStyle());
+    btnCtg->setStyleSheet(normalMode->getOtherButtonStyle());
+    btnPi->setStyleSheet(normalMode->getOtherButtonStyle());
+    btnE->setStyleSheet(normalMode->getOtherButtonStyle());
+    btnTrigMode->setStyleSheet(normalMode->getOtherButtonStyle());
+    btnLog2->setStyleSheet(normalMode->getOtherButtonStyle());
+    btnLn->setStyleSheet(normalMode->getOtherButtonStyle());
+    btnLog10->setStyleSheet(normalMode->getOtherButtonStyle());
     
     setLayout(mainLayout);
 }

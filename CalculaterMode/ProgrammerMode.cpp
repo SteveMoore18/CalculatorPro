@@ -53,18 +53,24 @@ ProgrammerMode::ProgrammerMode(QWidget *parent)
     
     
     
-    radioOctMode->setText("Oct");
-    radioDecMode->setText("Dec");
-    radioHexMode->setText("Hex");
-    radioBinMode->setText("Bin");
+    radioOctMode->setText("OCT");
+    radioDecMode->setText("DEC");
+    radioHexMode->setText("HEX");
+    radioBinMode->setText("BIN");
     
+    QGroupBox *modeBox = new QGroupBox();
     
     modeLayout->addWidget(radioBinMode);
     modeLayout->addWidget(radioOctMode);
     modeLayout->addWidget(radioDecMode);
     modeLayout->addWidget(radioHexMode);
     
+    //modeBox->setContentsMargins(0, 0, 0, 0);
     
+    modeBox->setLayout(modeLayout);
+    
+    modeLayout->setMargin(0);
+    modeLayout->setSpacing(0);
     
     btnA->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
     btnB->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
@@ -101,7 +107,7 @@ ProgrammerMode::ProgrammerMode(QWidget *parent)
     buttonsLayout->addWidget(normalMode);
     
     
-    vMainLayout->addLayout(modeLayout);
+    vMainLayout->addWidget(modeBox);
     vMainLayout->addLayout(buttonsLayout);
     
     connect(normalMode, SIGNAL(buttonClicked(QString)), this, SLOT(on_normalMode_clicked(QString)));
@@ -132,6 +138,44 @@ ProgrammerMode::ProgrammerMode(QWidget *parent)
     btnE->setEnabled(false);
     btnF->setEnabled(false);
     btnFF->setEnabled(false);
+    
+    btnA->setStyleSheet(normalMode->getNumberButtonStyle());
+    btnB->setStyleSheet(normalMode->getNumberButtonStyle());
+    btnC->setStyleSheet(normalMode->getNumberButtonStyle());
+    btnD->setStyleSheet(normalMode->getNumberButtonStyle());
+    btnE->setStyleSheet(normalMode->getNumberButtonStyle());
+    btnF->setStyleSheet(normalMode->getNumberButtonStyle());
+    btnFF->setStyleSheet(normalMode->getNumberButtonStyle());
+    
+    btnAnd->setStyleSheet(normalMode->getOtherButtonStyle());
+    btnOr->setStyleSheet(normalMode->getOtherButtonStyle());
+    btnXor->setStyleSheet(normalMode->getOtherButtonStyle());
+    btnMod->setStyleSheet(normalMode->getOtherButtonStyle());
+    
+    QFile groupBoxFile(":/styles/Appearance/CSS/GroupBoxStyle.css");
+    if (groupBoxFile.open(QIODevice::ReadOnly))
+    {
+        QString css = groupBoxFile.readAll();
+        css = css.arg(normalMode->getNumberButtonColor().name());
+        
+        modeBox->setStyleSheet(css);
+    }
+    groupBoxFile.close();
+    
+    QFile radioButtonFile(":/styles/Appearance/CSS/RadioButtonStyle.css");
+    if (radioButtonFile.open(QIODevice::ReadOnly))
+    {
+        QString css = radioButtonFile.readAll();
+        css = css.arg(normalMode->getNumberButtonColor().name()).arg(normalMode->getOtherButtonColor().name());
+        
+        radioBinMode->setStyleSheet(css);
+        radioOctMode->setStyleSheet(css);
+        radioDecMode->setStyleSheet(css);
+        radioHexMode->setStyleSheet(css);
+    }
+    radioButtonFile.close();
+    
+    
     
     setLayout(vMainLayout);
 }

@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/styles">
+        <file>Appearance/CSS/ButtonStyle.css</file>
+        <file>Appearance/CSS/TabBarStyle.css</file>
+        <file>Appearance/CSS/RadioButtonStyle.css</file>
+        <file>Appearance/CSS/GroupBoxStyle.css</file>
+        <file>Appearance/CSS/TextEdit.css</file>
+        <file>Appearance/CSS/ResultButton.css</file>
+        <file>Appearance/CSS/ListWidget.css</file>
+    </qresource>
+    <qresource prefix="/images">
+        <file>Appearance/Images/btnRemoveAll.png</file>
+        <file>Appearance/Images/rmOneSym.png</file>
+    </qresource>
+</RCC>

@@ -15,6 +15,7 @@
 #include <QRadioButton>
 #include <QPlainTextEdit>
 #include <QLabel>
+#include <QGroupBox>
 
 #include "normalmode.h"
 

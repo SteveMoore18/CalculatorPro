@@ -1,0 +1,15 @@
+QListWidget
+{
+  border: 1px solid %1;
+  border-radius: 8px;
+  font-size: 28px;
+}
+
+
+QListWidget::item:selected
+{
+  background-color: %2;
+  border: 1px solid %2;
+  border-radius: 8px;
+  font-size: 28px;
+}

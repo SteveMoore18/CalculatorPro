@@ -1,0 +1,15 @@
+QPushButton
+{
+  border-radius: 8px;
+  font-size: 34px;
+  text-align: left;
+}
+
+QPushButton::pressed
+{
+  background-color: %1;
+  border: 1px solid %1;
+  border-radius: 8px;
+  font-size: 34px;
+  text-align: left;
+}

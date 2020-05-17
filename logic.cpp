@@ -58,7 +58,7 @@ void Logic::startingInput(const QString &textButton)
         lbResult->setText(result);
         
         historyList->addItem(QString("%1 = %2").arg(expression).arg(result));
-        historyList->item(historyList->count() - 1)->setSizeHint(QSize(0, 40));
+        historyList->item(historyList->count() - 1)->setSizeHint(QSize(0, 70));
     }
     else if (textButton == "rmOneSym")
     {
