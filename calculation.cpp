@@ -107,7 +107,7 @@ QString Calculation::solveExpression(const QString &expression)
         else
         {
             // if mode is not programmer then just return result
-            return QString::number(numberStack->top(), 'g', 20);
+            return QString::number(numberStack->top(), 'g', 12);
         }
         
         // if mode is programmer then return result in current number system

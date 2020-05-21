@@ -59,6 +59,7 @@ void Logic::startingInput(const QString &textButton)
         
         historyList->addItem(QString("%1 = %2").arg(expression).arg(result));
         historyList->item(historyList->count() - 1)->setSizeHint(QSize(0, 70));
+        historyList->scrollToBottom();
     }
     else if (textButton == "rmOneSym")
     {

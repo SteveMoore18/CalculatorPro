@@ -430,17 +430,20 @@ void ProgrammerMode::transformInNewNumberSystem(NumberSystem fromNSys, NumberSys
         calculation->fillVectorNumbersAndOperators(numbersAndOperators, displayEdit->toPlainText());
         displayEdit->clear();
         
+        
+        
         if (f == 0 and t == 0)
         {
             lbResult->setText("Unknown error.");
             return;
         }
         
+        bool isNumber = false;
         for (int i = 0; i < numbersAndOperators.size(); i++)
         {
             // Take symbol
             QString currentSymbol = numbersAndOperators.at(i);
-            bool isNumber = false;
+            isNumber = false;
             // translate from the current number system to dec
             int number = currentSymbol.toUInt(&isNumber, f);
             if (isNumber){

@@ -26,11 +26,16 @@ NormalMode::NormalMode(QWidget *parent) : QWidget(parent)
     btnDot = new QPushButton(".");
     btnEqual = new QPushButton("=");
 
-    btnClear->setIcon(QIcon(QPixmap(":/images/Appearance/Images/btnRemoveAll.png")));
-    btnClear->setIconSize(QSize(30, 30));
+    QPixmap pxBtnRmAll(":/images/Appearance/Images/btnRemoveAll.png");
+    pxBtnRmAll = pxBtnRmAll.scaled(32, 32);
+    btnClear->setIconSize(pxBtnRmAll.rect().size());
+    btnClear->setIcon(QIcon(pxBtnRmAll));
     
-    btnRemoveOneSym->setIcon(QIcon(QPixmap(":/images/Appearance/Images/rmOneSym.png")));
-    btnRemoveOneSym->setIconSize(QSize(35, 35));
+    btnRemoveOneSym->setFlat(true);
+    QPixmap pxBtnRmOne(":/images/Appearance/Images/rmOneSym.png");
+    QIcon iconRmSym(pxBtnRmOne);
+    btnRemoveOneSym->setIconSize(QSize(32, 32));
+    btnRemoveOneSym->setIcon(iconRmSym);
     
     btn0->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
     btn1->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);

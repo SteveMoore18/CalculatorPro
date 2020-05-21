@@ -12,4 +12,5 @@ QPushButton::pressed
   border: 1px solid %2;
   border-radius: 8px;
   font-size: 28px;
+  color: #1f69ff;
 }
