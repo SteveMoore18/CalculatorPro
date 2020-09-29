@@ -4,5 +4,5 @@ This is CalculatorPro for iPad only.
 
 Framework Qt 5.14.*
 
-[![CalculatorPro](https://cdn1.savepice.ru/uploads/2020/5/22/3e38ce58f1fc266b2ad881b513f4aeeb-full.png "CalculatorPro")](https://cdn1.savepice.ru/uploads/2020/5/22/3e38ce58f1fc266b2ad881b513f4aeeb-full.png "CalculatorPro")
+[![CalculatorPro](https://hhcdn.ru/photo/587595380.png?t=1601494330&h=8lhtemCjm6saE3GfnzwmuQ "CalculatorPro")](https://hhcdn.ru/photo/587595380.png?t=1601494330&h=8lhtemCjm6saE3GfnzwmuQ "CalculatorPro")
 
